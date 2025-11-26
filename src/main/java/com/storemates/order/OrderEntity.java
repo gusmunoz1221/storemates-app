@@ -4,6 +4,7 @@ import com.storemates.product.ProductEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,29 +26,9 @@ public class OrderEntity {
     private String shippingZip;
 
     private double total;
+    private LocalDateTime created_at;
+    private OrderStatus status = OrderStatus.PENDING;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItemEntity> items = new ArrayList<>();
-
-
-    @Data
-    @Entity
-    @Table(name = "order_items")
-    public static class OrderItemEntity {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
-
-        private int quantity;
-        private double price;
-        private double subtotal;
-
-        @ManyToOne
-        @JoinColumn(name = "product_id")
-        private ProductEntity product;
-
-        @ManyToOne
-        @JoinColumn(name = "order_id")
-        private OrderEntity order;
-    }
 }

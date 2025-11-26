@@ -2,6 +2,7 @@ package com.storemates.order;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.awt.print.Pageable;
 import java.time.LocalDateTime;
@@ -18,4 +19,12 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
             LocalDateTime end,
             Pageable pageable
     );
+
+    // cantidad de clientes
+    @Query("SELECT COUNT(DISTINCT o.customerEmail) FROM OrderEntity o")
+    long countDistinctCustomers();
+
+    // total de ventas
+    @Query("SELECT SUM(o.total) FROM OrderEntity o")
+    Double getTotalSales();
 }
