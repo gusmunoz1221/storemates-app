@@ -1,10 +1,10 @@
-package com.storemates.product;
+package com.storemates.product.entity;
 
-import com.storemates.category.SubcategoryEntity;
+import com.storemates.category.entity.SubcategoryEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -15,7 +15,7 @@ public class ProductEntity {
     private Long id;
 
     private String name;
-    private BigInteger price;
+    private BigDecimal price;
     private String description;
     private String url;
 

@@ -1,6 +1,5 @@
-package com.storemates.category;
+package com.storemates.category.entity;
 
-import com.storemates.product.ProductEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.ArrayList;
