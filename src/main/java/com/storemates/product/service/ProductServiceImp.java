@@ -11,11 +11,10 @@ import com.storemates.product.mapper.ProductMapper;
 import com.storemates.product.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.awt.print.Pageable;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 @Service
 @AllArgsConstructor
@@ -94,7 +93,7 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public Page<ProductResponseDTO> filterByPriceRange(BigInteger minPrice, BigInteger maxPrice, Pageable pageable) {
+    public Page<ProductResponseDTO> filterByPriceRange(BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable) {
         return null;
     }
 
@@ -103,8 +102,5 @@ public class ProductServiceImp implements ProductService {
         return null;
     }
 
-    @Override
-    public Page<ProductResponseDTO> listOutOfStock(Pageable pageable) {
-        return null;
-    }
+
 }

@@ -81,7 +81,11 @@ CREATE TABLE orders (
     shipping_city VARCHAR(255),
     shipping_zip VARCHAR(50),
 
-    total NUMERIC(15,2)
+    total NUMERIC(15,2),
+
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+
+    status VARCHAR(50) NOT NULL DEFAULT 'PENDING'
 );
 
 -- ================================
