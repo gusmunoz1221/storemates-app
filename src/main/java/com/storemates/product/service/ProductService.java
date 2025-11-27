@@ -2,11 +2,9 @@ package com.storemates.product.service;
 
 import com.storemates.product.dto.ProductRequestDTO;
 import com.storemates.product.dto.ProductResponseDTO;
-import com.storemates.product.entity.ProductEntity;
 import org.springframework.data.domain.Page;
-
-import java.awt.print.Pageable;
-import java.math.BigInteger;
+import org.springframework.data.domain.Pageable;
+import java.math.BigDecimal;
 
 public interface ProductService {
     // Crear producto
@@ -31,7 +29,7 @@ public interface ProductService {
     Page<ProductResponseDTO> filterByCategory(Long categoryId, Pageable pageable);
 
     // Filtra por precios
-    Page<ProductResponseDTO> filterByPriceRange(BigInteger minPrice, BigInteger maxPrice, Pageable pageable);
+    Page<ProductResponseDTO> filterByPriceRange(BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
 
     // Lista los productos con stock mayor que cero
     Page<ProductResponseDTO> listInStock(Pageable pageable);

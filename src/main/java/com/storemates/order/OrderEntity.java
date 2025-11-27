@@ -2,7 +2,6 @@ package com.storemates.order;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +24,7 @@ public class OrderEntity {
     private String shippingZip;
 
     private double total;
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
     private OrderStatus status = OrderStatus.PENDING;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
