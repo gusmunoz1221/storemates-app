@@ -1,4 +1,4 @@
-package com.storemates.cart;
+package com.storemates.cart.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

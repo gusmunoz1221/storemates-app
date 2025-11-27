@@ -1,6 +1,5 @@
 package com.storemates.order;
 
-import com.storemates.product.ProductEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 

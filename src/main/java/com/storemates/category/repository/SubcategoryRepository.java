@@ -1,5 +1,6 @@
-package com.storemates.category;
+package com.storemates.category.repository;
 
+import com.storemates.category.entity.SubcategoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
