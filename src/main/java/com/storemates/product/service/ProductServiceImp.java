@@ -163,37 +163,28 @@ public class ProductServiceImp implements ProductService {
                 .map(productMapper::entityToDto);
     }
 
-
+    /**
+     *  -busca productos cuyo nombre contenga el texto indicado
+     *  -trae productos con o sin stock
+     *  -aplica la paginación proporcionada
+     *  -retorna los resultados en un Page de DTO
+     *  -ADMIN SEARCH-
+     */
     @Override
     public Page<ProductResponseDTO> searchAnyByName(String name, Pageable pageable) {
         return productRepository
                 .findByNameContainingIgnoreCase(name, pageable)
                 .map(productMapper::entityToDto);
     }
-
     /**
      *  -busca productos cuyo nombre contenga el texto indicado
      *  -filtra solo los productos con stock disponible
      *  -aplica la paginación proporcionada
      *  -retorna los resultados en un Page de DTO
+     *  -USER SEARCH-
      */
     @Override
     public Page<ProductResponseDTO> searchAvailableByName(String name, Pageable pageable) {
-        return productRepository
-                .findByNameContainingIgnoreCaseAndStockGreaterThan(name, 0, pageable)
-                .map(productMapper::entityToDto);
-    }
-
-    /**
-     *  -busca productos cuyo nombre contenga el texto indicado
-     *  -filtra solo los productos con stock disponible
-     *  -aplica la paginación proporcionada
-     *  -retorna los resultados en un Page de DTO
-     */
-    @Override
-    public Page<ProductResponseDTO> searchAvailableByName(String name, Pageable pageable) {
-        // Usa el método nuevo (Filtra stock > 0)
-        // Le pasamos el 0 como parámetro de stock mínimo
         return productRepository
                 .findByNameContainingIgnoreCaseAndStockGreaterThan(name, 0, pageable)
                 .map(productMapper::entityToDto);
