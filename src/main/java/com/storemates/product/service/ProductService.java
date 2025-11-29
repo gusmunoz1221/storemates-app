@@ -11,16 +11,13 @@ public interface ProductService {
     ProductResponseDTO save(ProductRequestDTO product);
 
     // actualizar producto
-    ProductResponseDTO update(ProductRequestDTO product,Long ProductId);
+    ProductResponseDTO update(ProductRequestDTO product, Long ProductId);
 
     // Eliminar producto
     void delete(Long id);
 
     // Lista los productos con paginación
     Page<ProductResponseDTO> listAll(Pageable pageable);
-
-    // Busca por nombre
-    Page<ProductResponseDTO> searchByName(String name, Pageable pageable);
 
     // Filtra por subcategoría
     Page<ProductResponseDTO> filterBySubcategory(Long subcategoryId, Pageable pageable);
@@ -31,6 +28,15 @@ public interface ProductService {
     // Filtra por precios
     Page<ProductResponseDTO> filterByPriceRange(BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
 
-    // Lista los productos con stock mayor que cero
+    // filtr productos mayor que
     Page<ProductResponseDTO> listInStock(Pageable pageable);
+
+    // Lista los productos con stock mayor que cero
+    Page<ProductResponseDTO> listOutOfStock(Pageable pageable);
+
+    // Para el ADMIN
+    Page<ProductResponseDTO> searchAnyByName(String name, Pageable pageable);
+
+    // Para el USER
+    Page<ProductResponseDTO> searchAvailableByName(String name, Pageable pageable);
 }
