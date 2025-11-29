@@ -10,14 +10,14 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
 
     boolean existsByName(String name);
 
-        // por nombre
-        Page<ProductEntity> findByNameContainingIgnoreCase(String name, Pageable pageable);
+
 
         // por subcategoría
         Page<ProductEntity> findBySubcategoryId(Long subcategoryId, Pageable pageable);
 
         // por categoría (de subcategoría)
-        Page<ProductEntity> findBySubcategoryCategoryId(Long categoryId, Pageable pageable);
+        Page<ProductEntity> findBySubcategory_CategoryId(Long categoryId, Pageable pageable);
+
 
         // por rango de precios
         Page<ProductEntity> findByPriceBetween(BigDecimal min, BigDecimal max, Pageable pageable);
@@ -26,5 +26,12 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
         Page<ProductEntity> findByStockGreaterThan(int stock, Pageable pageable);
 
         // sin stock
-        Page<ProductEntity> findByStock(int stock, Pageable pageable);
+        Page<ProductEntity> findByStockEquals(int stock, Pageable pageable);
+
+        // para ADMIN
+        Page<ProductEntity> findByNameContainingIgnoreCase(String name, Pageable pageable);
+
+        // para USER
+        Page<ProductEntity> findByNameContainingIgnoreCaseAndStockGreaterThan(String name, Integer stock, Pageable pageable);
+
 }
