@@ -2,7 +2,6 @@ package com.storemates.product.controller;
 
 import com.storemates.product.dto.ProductRequestDTO;
 import com.storemates.product.dto.ProductResponseDTO;
-import com.storemates.product.service.ProductService;
 import com.storemates.product.service.ProductServiceImp;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -54,8 +53,8 @@ public class ProductAdminController {
     // BUSCADOR INTERNO
     @GetMapping("/search")
     public ResponseEntity<Page<ProductResponseDTO>> searchForAdmin(
-            @RequestParam String query,
+            @RequestParam String name,
             @PageableDefault(size = 10) Pageable pageable) {
-        return ResponseEntity.ok(productService.searchAnyByName(query, pageable));
+        return ResponseEntity.ok(productService.searchAnyByName(name, pageable));
     }
 }
