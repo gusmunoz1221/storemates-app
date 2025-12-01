@@ -176,30 +176,38 @@ public class ProductServiceImp implements ProductService {
     }
 
     /**
-     *  -busca productos cuyo nombre contenga el texto indicado
-     *  -trae productos con o sin stock
-     *  -aplica la paginación proporcionada
-     *  -retorna los resultados en un Page de DTO
-     *  -ADMIN SEARCH-
+     * - busca productos que contengan CUALQUIERA de las palabras indicadas (Lógica OR)
+     * - normaliza la entrada: convierte espacios múltiples en el operador regex pipe (|)
+     * - trae productos CON o SIN stock (Visión Global)
+     * - retorna los resultados en un Page de DTO
+     * - ADMIN SEARCH-
      */
     @Override
     public Page<ProductResponseDTO> searchAnyByName(String name, Pageable pageable) {
+        if (name == null || name.isBlank()) return Page.empty();
+
+        String regex = name.trim().replaceAll("\\s+", "|");
+
         return productRepository
-                .findByNameContainingIgnoreCase(name, pageable)
+                .searchByNameRegexAny(regex, pageable)
                 .map(productMapper::entityToDto);
     }
 
     /**
-     *  -busca productos cuyo nombre contenga el texto indicado
-     *  -filtra solo los productos con stock disponible
-     *  -aplica la paginación proporcionada
-     *  -retorna los resultados en un Page de DTO
-     *  -USER SEARCH-
+     * - busca productos que contengan CUALQUIERA de las palabras indicadas (Lógica OR)
+     * - normaliza la entrada: convierte espacios múltiples en el operador regex pipe (|)
+     * - filtra SOLO los productos con stock disponible (> 0)
+     * - retorna los resultados en un Page de DTO
+     * -USER SEARCH-
      */
     @Override
     public Page<ProductResponseDTO> searchAvailableByName(String name, Pageable pageable) {
+        if (name == null || name.isBlank()) return Page.empty();
+
+        String regex = name.trim().replaceAll("\\s+", "|");
+
         return productRepository
-                .findByNameContainingIgnoreCaseAndStockGreaterThan(name, 0, pageable)
+                .searchByNameRegexAvailable(regex, pageable)
                 .map(productMapper::entityToDto);
     }
 }

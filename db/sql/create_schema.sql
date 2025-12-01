@@ -26,7 +26,7 @@ CREATE TABLE subcategories (
 -- ================================
 CREATE TABLE products (
     id BIGSERIAL PRIMARY KEY,
-    name VARCHAR(255),
+    name VARCHAR(255) UNIQUE,
     price NUMERIC(15,2),
     description TEXT,
     url TEXT,
