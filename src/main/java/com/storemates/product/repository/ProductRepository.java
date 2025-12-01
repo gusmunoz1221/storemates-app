@@ -4,6 +4,9 @@ import com.storemates.product.entity.ProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import java.math.BigDecimal;
 
 public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
@@ -29,9 +32,12 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
         Page<ProductEntity> findByStockEquals(int stock, Pageable pageable);
 
         // para ADMIN
-        Page<ProductEntity> findByNameContainingIgnoreCase(String name, Pageable pageable);
+        @Query(value = "SELECT * FROM products p WHERE p.name ~* :regex", nativeQuery = true)
+        Page<ProductEntity> searchByNameRegexAny(@Param("regex") String regex, Pageable pageable);
 
         // para USER
-        Page<ProductEntity> findByNameContainingIgnoreCaseAndStockGreaterThan(String name, Integer stock, Pageable pageable);
+        @Query(value = "SELECT * FROM products p WHERE p.name ~* :regex AND p.stock > 0", nativeQuery = true)
+        Page<ProductEntity> searchByNameRegexAvailable(@Param("regex") String regex, Pageable pageable);
+
 
 }
