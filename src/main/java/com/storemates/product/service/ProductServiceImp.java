@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 
 @Service
 @AllArgsConstructor
+@Transactional(readOnly = true)
 public class ProductServiceImp implements ProductService {
     private final SubcategoryRepository subcategoryRepository;
     private final ProductRepository productRepository;
@@ -88,12 +89,22 @@ public class ProductServiceImp implements ProductService {
         productRepository.delete(product);
     }
 
+    /**
+     *  -retorna los detalles del producto
+     *  -cuando un customer hace click en la foto
+     * */
+    public ProductResponseDTO findById(Long id){
+        return productRepository.findById(id)
+                .map(productMapper::entityToDto)
+                .orElseThrow(() -> new ResourceNotFoundException("el producto con ID: "+id+" no existe"));
+    }
 
                 /*----------------------FILTROS DE BUSCQUEDA----------------*/
 
     /**
      *  -retorna una página de productos aplicando la paginación y orden recibidos
      *  -convierte las entidades a DTO mediante el mapper
+     *  -ADMIN-
      */
     @Override
     public Page<ProductResponseDTO> listAll(Pageable pageable) {
@@ -155,6 +166,7 @@ public class ProductServiceImp implements ProductService {
      *  -lista solo productos SIN stock
      *  -aplica la paginación indicada
      *  -retorna los resultados en un Page de DTO
+     *  -ADMIN-
      */
     @Override
     public Page<ProductResponseDTO> listOutOfStock(Pageable pageable) {
@@ -180,6 +192,7 @@ public class ProductServiceImp implements ProductService {
                 .searchByNameRegexAny(regex, pageable)
                 .map(productMapper::entityToDto);
     }
+
     /**
      * - busca productos que contengan CUALQUIERA de las palabras indicadas (Lógica OR)
      * - normaliza la entrada: convierte espacios múltiples en el operador regex pipe (|)
