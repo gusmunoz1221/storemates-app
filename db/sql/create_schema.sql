@@ -42,29 +42,33 @@ CREATE TABLE products (
 -- CARTS
 -- ================================
 CREATE TABLE carts (
-    id BIGSERIAL PRIMARY KEY
+    id BIGSERIAL PRIMARY KEY,
+    session_id VARCHAR(255) NOT NULL UNIQUE,
+    total_amount NUMERIC(19, 2) DEFAULT 0.00,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ================================
--- CART ITEMS
+-- TABLE: CART ITEMS
 -- ================================
 CREATE TABLE cart_items (
     id BIGSERIAL PRIMARY KEY,
     quantity INTEGER NOT NULL,
-    unit_price NUMERIC(15,2) NOT NULL,
-    subtotal NUMERIC(15,2) NOT NULL,
+    unit_price NUMERIC(19, 2) NOT NULL,
     cart_id BIGINT NOT NULL,
     product_id BIGINT NOT NULL,
-
     CONSTRAINT fk_cartitem_cart
         FOREIGN KEY (cart_id)
         REFERENCES carts(id)
-        ON UPDATE CASCADE ON DELETE CASCADE,
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_cartitem_product
         FOREIGN KEY (product_id)
         REFERENCES products(id)
-        ON UPDATE CASCADE ON DELETE RESTRICT
+        ON UPDATE CASCADE
+        ON DELETE RESTRICT
 );
 
 -- ================================

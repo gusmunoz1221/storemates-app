@@ -4,6 +4,8 @@ import com.storemates.product.entity.ProductEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 @Entity
 @Table(name = "cart_items")
@@ -12,17 +14,15 @@ public class CartItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int quantity;
-    private double unitPrice;
-    private double subtotal;
+    private Integer quantity;
 
-    // Muchos cartItems pertenecen a un mismo cart
-    @ManyToOne
+    private BigDecimal unitPrice;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id", nullable = false)
     private CartEntity cart;
 
-    // Muchos cartItems pueden referenciar al mismo product
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", nullable = false)
     private ProductEntity product;
 }
