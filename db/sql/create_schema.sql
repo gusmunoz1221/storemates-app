@@ -100,7 +100,6 @@ CREATE TABLE order_items (
 
     quantity INTEGER NOT NULL,
     price NUMERIC(15,2) NOT NULL,
-    subtotal NUMERIC(15,2) NOT NULL,
 
     product_id BIGINT,
     order_id BIGINT,

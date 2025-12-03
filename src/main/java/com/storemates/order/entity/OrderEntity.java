@@ -1,7 +1,9 @@
-package com.storemates.order;
+package com.storemates.order.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +25,7 @@ public class OrderEntity {
     private String shippingCity;
     private String shippingZip;
 
-    private double total;
+    private BigDecimal totalAmount;
     private LocalDateTime createdAt;
     private OrderStatus status = OrderStatus.PENDING;
 
