@@ -45,16 +45,14 @@ public class ProductAdminController {
 
     // REPORTE DE STOCK CRÍTICO
     @GetMapping("/out-of-stock")
-    public ResponseEntity<Page<ProductResponseDTO>> getOutOfStock(
-            @PageableDefault(size = 10, sort = "name") Pageable pageable) {
+    public ResponseEntity<Page<ProductResponseDTO>> getOutOfStock(@PageableDefault(size = 10, sort = "name") Pageable pageable) {
         return ResponseEntity.ok(productService.listOutOfStock(pageable));
     }
 
     // BUSCADOR INTERNO
     @GetMapping("/search")
-    public ResponseEntity<Page<ProductResponseDTO>> searchForAdmin(
-            @RequestParam String name,
-            @PageableDefault(size = 10) Pageable pageable) {
+    public ResponseEntity<Page<ProductResponseDTO>> searchForAdmin(@RequestParam String name,
+                                                                   @PageableDefault(size = 10) Pageable pageable) {
         return ResponseEntity.ok(productService.searchAnyByName(name, pageable));
     }
 }

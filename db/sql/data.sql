@@ -30,8 +30,8 @@ INSERT INTO products (id, name, price, description, url, stock, subcategory_id) 
     (5, 'Mate Torpedo Lustrado', 10000, 'Torpedo lustrado artesanal', 'https://example.com/mate5.jpg', 10, 4),
     (6, 'Termo Genérico Acero 1L', 25000, 'Termo de acero inoxidable 1L', 'https://example.com/termo2.jpg', 40, 5),
     (7, 'Termo Genérico 750ml', 18000, 'Termo acero 750ml genérico', 'https://example.com/termo3.jpg', 35, 5),
-    (8, 'Mate Acero Negro', 6000, 'Mate de acero inoxidable color negro', 'https://example.com/mate6.jpg', 50, 6),
-    (9, 'Mate Acero Blanco', 6000, 'Mate de acero inoxidable blanco', 'https://example.com/mate7.jpg', 45, 6),
+    (8, 'Mate Acero Negro', 6000, 'Mate acero inoxidable negro', 'https://example.com/mate6.jpg', 50, 6),
+    (9, 'Mate Acero Blanco', 6000, 'Mate acero inoxidable blanco', 'https://example.com/mate7.jpg', 45, 6),
     (10, 'Termo Adventure Verde', 45000, 'Termo Adventure verde 1L', 'https://example.com/termo4.jpg', 20, 7),
     (11, 'Termo Adventure Negro', 46000, 'Adventure negro 1L', 'https://example.com/termo5.jpg', 22, 7),
     (12, 'Mate Camionero Marrón', 11000, 'Camionero cuero marrón', 'https://example.com/mate8.jpg', 28, 2),
@@ -41,24 +41,24 @@ INSERT INTO products (id, name, price, description, url, stock, subcategory_id) 
 -- ============================
 -- CART
 -- ============================
-INSERT INTO carts (id) VALUES
-    (1),
-    (2),
-    (3),
-    (4);
+INSERT INTO carts (id, session_id, total_amount) VALUES
+    (1, 'session-1', 0),
+    (2, 'session-2', 0),
+    (3, 'session-3', 0),
+    (4, 'session-4', 0);
 
 
 -- ============================
 -- CART ITEMS
 -- ============================
-INSERT INTO cart_items (id, quantity, unit_price, subtotal, cart_id, product_id) VALUES
-    (1, 2, 15000, 30000, 1, 1),
-    (2, 1, 62000, 62000, 1, 3),
-    (3, 1, 8000, 8000, 2, 4),
-    (4, 2, 6000, 12000, 2, 8),
-    (5, 1, 45000, 45000, 3, 10),
-    (6, 3, 6000, 18000, 3, 9),
-    (7, 1, 18000, 18000, 4, 7);
+INSERT INTO cart_items (id, quantity, unit_price, cart_id, product_id) VALUES
+    (1, 2, 15000, 1, 1),
+    (2, 1, 62000, 1, 3),
+    (3, 1, 8000, 2, 4),
+    (4, 2, 6000, 2, 8),
+    (5, 1, 45000, 3, 10),
+    (6, 3, 6000, 3, 9),
+    (7, 1, 18000, 4, 7);
 
 
 -- ============================
