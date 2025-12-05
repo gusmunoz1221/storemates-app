@@ -31,10 +31,10 @@ public class GlobalExceptionHandler {
                 "timestamp", LocalDateTime.now(),
                 "message", e.getMessage(),
                 "success", false,
-                "status", HttpStatus.BAD_REQUEST.value()
+                "status", HttpStatus.UNPROCESSABLE_ENTITY.value()
         );
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(body);
     }
 
     // valida las exceptions que se lanzan en @Valid
@@ -68,4 +68,17 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<?> handleConflict(ConflictException e) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(Map.of(
+                        "timestamp", LocalDateTime.now(),
+                        "message", e.getMessage(),
+                        "success", false,
+                        "status", HttpStatus.CONFLICT.value()
+                ));
+    }
+
 }

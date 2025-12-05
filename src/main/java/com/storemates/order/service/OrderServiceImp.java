@@ -85,7 +85,7 @@ public class OrderServiceImp implements OrderService {
     public OrderResponseDTO getOrderById(Long id) {
         return orderRepository.findById(id)
                 .map(orderMapper::entityToDto)
-                .orElseThrow(() -> new ResourceNotFoundException("no se pudo encontrar el carrito o ha expirado"));
+                .orElseThrow(() -> new ResourceNotFoundException("el carrito ha expirado"));
     }
 
     @Override
@@ -97,7 +97,6 @@ public class OrderServiceImp implements OrderService {
 
     @Override
     public Page<OrderResponseDTO> findByStatus(String status, Pageable pageable) {
-
         return orderRepository
                 .findByStatus(status,pageable)
                 .map(orderMapper::entityToDto);

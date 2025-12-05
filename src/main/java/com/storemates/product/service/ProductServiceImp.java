@@ -3,6 +3,7 @@ package com.storemates.product.service;
 import com.storemates.category.entity.SubcategoryEntity;
 import com.storemates.category.repository.SubcategoryRepository;
 import com.storemates.exception.BusinessException;
+import com.storemates.exception.ConflictException;
 import com.storemates.exception.ResourceNotFoundException;
 import com.storemates.product.dto.ProductRequestDTO;
 import com.storemates.product.dto.ProductResponseDTO;
@@ -40,7 +41,7 @@ public class ProductServiceImp implements ProductService {
                 .orElseThrow(()-> new ResourceNotFoundException("subcategoria no encontrada"));
 
         if(productRepository.existsByName(productRequest.getName()))
-            throw new BusinessException("producto con el nombre: "+productRequest.getName()+" ya existe");
+            throw new ConflictException("producto con el nombre: "+productRequest.getName()+" ya existe");
 
         ProductEntity product = productMapper.dtoToEntity(productRequest,subcategory);
         productRepository.save(product);
@@ -66,6 +67,7 @@ public class ProductServiceImp implements ProductService {
             throw new BusinessException("producto con el nombre: "+productRequest.getName()+" ya existe");
 
         SubcategoryEntity subcategory = product.getSubcategory();
+
         if (productRequest.getSubcategoryId() != null &&
                 !productRequest.getSubcategoryId().equals(product.getSubcategory().getId()))
             subcategory = subcategoryRepository.findById(productRequest.getSubcategoryId())
