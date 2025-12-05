@@ -14,11 +14,9 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
     Page<OrderEntity> findByStatus(String status, Pageable pageable);
 
     // por rango de fechas
-    Page<OrderEntity> findByCreatedAtBetween(
-            LocalDateTime start,
-            LocalDateTime end,
-            Pageable pageable
-    );
+    Page<OrderEntity> findByCreatedAtBetween(LocalDateTime start,
+                                             LocalDateTime end,
+                                             Pageable pageable);
 
     // cantidad de clientes
     @Query("SELECT COUNT(DISTINCT o.customerEmail) FROM OrderEntity o")

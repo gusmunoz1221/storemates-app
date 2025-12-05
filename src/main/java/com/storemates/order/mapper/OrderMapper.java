@@ -1,6 +1,8 @@
-package com.storemates.order;
+package com.storemates.order.mapper;
 
+import com.storemates.cart.entity.CartItemEntity;
 import com.storemates.order.dto.OrderItemResponseDTO;
+import com.storemates.order.dto.OrderRequestDTO;
 import com.storemates.order.dto.OrderResponseDTO;
 import com.storemates.order.entity.OrderEntity;
 import com.storemates.order.entity.OrderItemEntity;
@@ -11,7 +13,7 @@ import java.util.List;
 
 @Component
 public class OrderMapper {
-    // De Entidad a DTO (Para mostrar la orden)
+
     public OrderResponseDTO entityToDto(OrderEntity entity) {
         List<OrderItemResponseDTO> itemsDto = entity.getItems().stream()
                 .map(this::itemToDto)
@@ -38,5 +40,27 @@ public class OrderMapper {
                 .price(entity.getPrice())
                 .subtotal(subtotal)
                 .build();
+    }
+
+    // recibo la order padre para establecer la relación bidireccional
+    public OrderItemEntity cartItemToOrderItem(CartItemEntity cartItem, OrderEntity parentOrder) {
+        OrderItemEntity orderItem = new OrderItemEntity();
+        orderItem.setOrder(parentOrder);
+        orderItem.setProduct(cartItem.getProduct());
+        orderItem.setQuantity(cartItem.getQuantity());
+        orderItem.setPrice(cartItem.getProduct().getPrice());
+        return orderItem;
+    }
+
+    public OrderEntity requestToEntity(OrderRequestDTO request) {
+        OrderEntity order = new OrderEntity();
+
+        order.setCustomerName(request.getCustomerName());
+        order.setCustomerEmail(request.getCustomerEmail());
+        order.setCustomerPhone(request.getCustomerPhone());
+        order.setShippingAddress(request.getShippingAddress());
+        order.setShippingCity(request.getShippingCity());
+        order.setShippingZip(request.getShippingZip());
+        return order;
     }
 }
