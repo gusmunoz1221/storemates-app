@@ -1,8 +1,10 @@
-package com.storemates.order;
+package com.storemates.order.entity;
 
 import com.storemates.product.entity.ProductEntity;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -13,11 +15,13 @@ public class OrderItemEntity {
     private Long id;
 
     private int quantity;
-    private double price;
-    private double subtotal;
+    private BigDecimal price;
 
-    @ManyToOne @JoinColumn(name = "product_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_id", nullable = false)
     private ProductEntity product;
-    @ManyToOne @JoinColumn(name = "order_id")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
     private OrderEntity order;
 }
