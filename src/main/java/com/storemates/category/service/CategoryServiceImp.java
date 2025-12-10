@@ -9,6 +9,7 @@ import com.storemates.category.entity.SubcategoryEntity;
 import com.storemates.category.mapper.CategoryMapper;
 import com.storemates.category.repository.CategoryRepository;
 import com.storemates.category.repository.SubcategoryRepository;
+import com.storemates.exception.BusinessException;
 import com.storemates.exception.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,34 +28,33 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     @Transactional
-    public CategoryResponseDTO createCategory(CategoryRequestDTO request) {
-        CategoryEntity entity = categoryMapper.toCategoryEntity(request);
-
+    public CategoryResponseDTO createCategory(CategoryRequestDTO categoryRequest) {
+        CategoryEntity entity = categoryMapper.toCategoryEntity(categoryRequest);
         CategoryEntity savedEntity = categoryRepository.save(entity);
-
         return categoryMapper.toCategoryResponse(savedEntity);
     }
 
     @Override
     @Transactional
-    public CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO request) {
+    public CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO categoryRequest) {
         CategoryEntity category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada ID: " + id));
 
-        // 2. El Mapper se encarga de mezclar los datos nuevos con los viejos
-        categoryMapper.updateCategoryFromDto(request, category);
+        categoryMapper.updateCategoryFromDto(categoryRequest, category);
 
-        // 3. Guardamos
         return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }
 
     @Override
     @Transactional
     public void deleteCategory(Long id) {
-        if (!categoryRepository.existsById(id))
-            throw new ResourceNotFoundException("Categoría no encontrada ID: " + id);
+        CategoryEntity category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada ID: " + id));
 
-        categoryRepository.deleteById(id);
+        if (!category.getSubcategories().isEmpty())
+            throw new BusinessException("No se puede eliminar una categoría con subcategorías asociadas");
+
+        categoryRepository.delete(category);
     }
 
     @Override
@@ -68,9 +68,9 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     @Transactional(readOnly = true)
     public List<CategoryResponseDTO> listCategoriesWithSubcategories() {
-        return categoryRepository.findAll().stream()
+        return categoryRepository.findAllWithSubcategories().stream()
                 .map(categoryMapper::toCategoryResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -85,24 +85,26 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     @Transactional
-    public SubcategorySimpleDTO createSubcategory(Long categoryId, SubcategoryRequestDTO request) {
-        CategoryEntity parentCategory = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new ResourceNotFoundException("La categoría ID: " + categoryId + " no existe"));
+    public SubcategorySimpleDTO createSubcategory(Long categoryId, SubcategoryRequestDTO subcategoryRequest) {
+        CategoryEntity parent = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("La categoría ID " + categoryId + " no existe"));
 
-        SubcategoryEntity subcategory = categoryMapper.toSubcategoryEntity(request);
+        SubcategoryEntity sub = categoryMapper.toSubcategoryEntity(subcategoryRequest);
 
-        subcategory.setCategory(parentCategory);
+        sub.setCategory(parent);
+        parent.getSubcategories().add(sub);
 
-        return categoryMapper.toSubcategorySimpleDto(subcategoryRepository.save(subcategory));
+        SubcategoryEntity saved = subcategoryRepository.save(sub);
+        return categoryMapper.toSubcategorySimpleDto(saved);
     }
 
     @Override
     @Transactional
-    public SubcategorySimpleDTO updateSubcategory(Long id, SubcategoryRequestDTO request) {
+    public SubcategorySimpleDTO updateSubcategory(Long id, SubcategoryRequestDTO subcategoryRequest) {
         SubcategoryEntity subcategory = subcategoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Subcategoría no encontrada ID: " + id));
 
-        categoryMapper.updateSubcategoryFromDto(request, subcategory);
+        categoryMapper.updateSubcategoryFromDto(subcategoryRequest, subcategory);
 
         return categoryMapper.toSubcategorySimpleDto(subcategoryRepository.save(subcategory));
     }
@@ -110,9 +112,15 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     @Transactional
     public void deleteSubcategory(Long id) {
-        if (!subcategoryRepository.existsById(id))
-            throw new ResourceNotFoundException("Subcategoría no encontrada ID: " + id);
+        SubcategoryEntity sub = subcategoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Subcategoría no encontrada ID: " + id));
 
-        subcategoryRepository.deleteById(id);
+        if (!sub.getProducts().isEmpty())
+            throw new BusinessException("La subcategoría tiene productos asociados y no puede eliminarse");
+
+        CategoryEntity parent = sub.getCategory();
+        parent.getSubcategories().remove(sub);
+
+        subcategoryRepository.delete(sub);
     }
 }
