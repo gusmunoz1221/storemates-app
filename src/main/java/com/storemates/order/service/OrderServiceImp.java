@@ -96,7 +96,7 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public Page<OrderResponseDTO> findByStatus(String status, Pageable pageable) {
+    public Page<OrderResponseDTO> filterOrdersByStatus(String status, Pageable pageable) {
 
         return orderRepository
                 .findByStatus(status,pageable)

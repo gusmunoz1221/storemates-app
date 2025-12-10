@@ -77,7 +77,7 @@ public class CartServiceImp implements CartService{
     }
 
     @Override
-    public CartResponseDTO removeItem(String sessionId, Long productId) {
+    public CartResponseDTO removeItemFromCart(String sessionId, Long productId) {
         CartEntity cart = getOrCreateCart(sessionId);
 
         // si cumple la condicion lo elimina de la bd y devuelve true

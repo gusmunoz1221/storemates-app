@@ -28,7 +28,7 @@ public class ProductCustomerController {
     public ResponseEntity<Page<ProductResponseDTO>> searchProducts(
             @RequestParam String name,
             @PageableDefault(size = 10, sort= "name") Pageable pageable){
-        return ResponseEntity.ok(productService.searchAvailableByName(name,pageable));
+        return ResponseEntity.ok(productService.searchAvailableProducts(name,pageable));
     }
 
     // DETALLE DEL PRODUCTO
@@ -42,7 +42,7 @@ public class ProductCustomerController {
     public ResponseEntity<Page<ProductResponseDTO>> filterByCategory(
             @PathVariable Long categoryId,
             @PageableDefault(size = 10) Pageable pageable) {
-        return ResponseEntity.ok(productService.filterByCategory(categoryId, pageable));
+        return ResponseEntity.ok(productService.filterProductsByCategory(categoryId, pageable));
     }
 
     // FILTRA POR RANGO DE PRECIO

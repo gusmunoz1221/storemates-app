@@ -7,36 +7,36 @@ import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 
 public interface ProductService {
-    // Crear producto
-    ProductResponseDTO save(ProductRequestDTO product);
+    // CREAR PRODUCTO
+    ProductResponseDTO createProduct(ProductRequestDTO product);
 
-    // actualizar producto
-    ProductResponseDTO update(ProductRequestDTO product, Long ProductId);
+    // ACTUALIZAR PRODUCTO
+    ProductResponseDTO updateProduct(ProductRequestDTO product, Long productId);
 
-    // Eliminar producto
-    void delete(Long id);
+    // ELIMINAR PRODUCTO
+    void deleteProduct(Long id);
 
-    // Lista los productos con paginación
-    Page<ProductResponseDTO> listAll(Pageable pageable);
+    //LISTAR PRODCUTO POR PAGINACION
+    Page<ProductResponseDTO> listProducts(Pageable pageable);
 
-    // Filtra por subcategoría
+    // FILTRAR POR CATEGORIA
     Page<ProductResponseDTO> filterBySubcategory(Long subcategoryId, Pageable pageable);
 
-    // Filtra por categoría (a través de la subcategoría)
-    Page<ProductResponseDTO> filterByCategory(Long categoryId, Pageable pageable);
+    // FILTRAR POR CATEGORIA (a través de la subcategoría)
+    Page<ProductResponseDTO> filterProductsByCategory(Long categoryId, Pageable pageable);
 
-    // Filtra por precios
+    // FILTRAR POR PRECIOS
     Page<ProductResponseDTO> filterByPriceRange(BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);
 
-    // filtr productos mayor que
+    // FILTRAR POR MAYOR QUE
     Page<ProductResponseDTO> listInStock(Pageable pageable);
 
-    // Lista los productos con stock mayor que cero
+    // LISTAR CON PRODUCTOS MAYOR QUE CERO
     Page<ProductResponseDTO> listOutOfStock(Pageable pageable);
 
-    // Para el ADMIN
-    Page<ProductResponseDTO> searchAnyByName(String name, Pageable pageable);
+    // ----BUSCARDOR PARA EL ADMIN------
+    Page<ProductResponseDTO> searchProducts(String name, Pageable pageable);
 
-    // Para el USER
-    Page<ProductResponseDTO> searchAvailableByName(String name, Pageable pageable);
+    // ----BUSCADOR PARA EL USER----
+    Page<ProductResponseDTO> searchAvailableProducts(String name, Pageable pageable);
 }

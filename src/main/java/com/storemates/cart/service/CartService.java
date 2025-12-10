@@ -3,15 +3,15 @@ package com.storemates.cart.service;
 import com.storemates.cart.dto.CartResponseDTO;
 
 public interface CartService {
-    // obtener el carrito actual o crear uno vacío si no existe
+    // OBTENER EL CARRITO ACTUAL, O CREA UNO EN CASO QUE NO EXISTA
     CartResponseDTO getCart(String sessionId);
 
-    // agregar un producto o sumar cantidad si ya existe
+    // AGREGAR UN PRODUCTO O SUMAR CANTIDAD EN CASO QUE NO EXISTA
     CartResponseDTO addToCart(String sessionId, Long productId, Integer quantity);
 
-    // eliminar un producto del carrito
-    CartResponseDTO removeItem(String sessionId, Long productId);
+    // ELIMINAR UN PRODUCTO DEL CARRITO
+    CartResponseDTO removeItemFromCart(String sessionId, Long productId);
 
-    // vaciar el carrito
+    // VACIAR CARRITO
     void clearCart(String sessionId);
 }

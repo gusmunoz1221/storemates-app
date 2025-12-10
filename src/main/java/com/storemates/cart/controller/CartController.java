@@ -34,7 +34,7 @@ public class CartController {
     @DeleteMapping("/items/{sessionId}/{productId}")
     public ResponseEntity<CartResponseDTO> removeFromCart(@PathVariable String sessionId,
                                                           @PathVariable Long productId) {
-        return ResponseEntity.ok(cartService.removeItem(sessionId, productId));
+        return ResponseEntity.ok(cartService.removeItemFromCart(sessionId, productId));
     }
 
     // VACIAR CARRITO

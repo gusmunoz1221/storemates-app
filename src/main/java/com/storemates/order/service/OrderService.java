@@ -14,22 +14,20 @@ public interface OrderService {
     // CHECKOUT
     OrderResponseDTO createOrder(OrderRequestDTO request);
 
-    // BUSCAR POR ID
+    // BUSCAR ORDEN POR ID
     OrderResponseDTO getOrderById(Long id);
 
      //  ------------(ADMIN)--------
-    // LISTAR (ADMIN)
+    // LISTAR TODAS LAS ORDENES (ADMIN)
     Page<OrderResponseDTO> getAllOrders(Pageable pageable);
 
-    // POR ESTADO
-    Page<OrderResponseDTO> findByStatus(String status, Pageable pageable);
+    // BUSCAR ORDEN POR ESTADO
+    Page<OrderResponseDTO> filterOrdersByStatus(String status, Pageable pageable);
 
-    // POR FECHAS
-    Page<OrderResponseDTO> findByCreatedAtBetween(
-            LocalDateTime start,
-            LocalDateTime end,
-            Pageable pageable
-    );
+    // BUSCAR ORDENB POR FECHAS
+    Page<OrderResponseDTO> findByCreatedAtBetween(LocalDateTime start,
+                                                  LocalDateTime end,
+                                                  Pageable pageable);
 
     // TOTAL DE VENTAS
     Double getTotalSales();

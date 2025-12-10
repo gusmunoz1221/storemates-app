@@ -34,7 +34,7 @@ public class ProductServiceImp implements ProductService {
      */
     @Transactional
     @Override
-    public ProductResponseDTO save(ProductRequestDTO productRequest) {
+    public ProductResponseDTO createProduct(ProductRequestDTO productRequest) {
         SubcategoryEntity subcategory = subcategoryRepository
                 .findById(productRequest.getSubcategoryId())
                 .orElseThrow(()-> new ResourceNotFoundException("subcategoria no encontrada"));
@@ -56,7 +56,7 @@ public class ProductServiceImp implements ProductService {
      */
     @Transactional
     @Override
-    public ProductResponseDTO update(ProductRequestDTO productRequest, Long productId) {
+    public ProductResponseDTO updateProduct(ProductRequestDTO productRequest, Long productId) {
 
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("El producto con ID: " + productId + " no existe"));
@@ -82,7 +82,7 @@ public class ProductServiceImp implements ProductService {
      *  -lanza ResourceNotFoundException si el producto no existe
      */
     @Override
-    public void delete(Long id) {
+    public void deleteProduct(Long id) {
         ProductEntity product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("el producto con ID: "+id+" no existe"));
 
@@ -107,7 +107,7 @@ public class ProductServiceImp implements ProductService {
      *  -ADMIN-
      */
     @Override
-    public Page<ProductResponseDTO> listAll(Pageable pageable) {
+    public Page<ProductResponseDTO> listProducts(Pageable pageable) {
         return productRepository
                 .findAll(pageable)
                 .map(productMapper::entityToDto);
@@ -132,7 +132,7 @@ public class ProductServiceImp implements ProductService {
      *  -retorna los resultados en un Page de DTO
      */
     @Override
-    public Page<ProductResponseDTO> filterByCategory(Long categoryId, Pageable pageable) {
+    public Page<ProductResponseDTO> filterProductsByCategory(Long categoryId, Pageable pageable) {
         return productRepository
                 .findBySubcategory_CategoryId(categoryId, pageable)
                 .map(productMapper::entityToDto);
@@ -183,7 +183,7 @@ public class ProductServiceImp implements ProductService {
      * - ADMIN SEARCH-
      */
     @Override
-    public Page<ProductResponseDTO> searchAnyByName(String name, Pageable pageable) {
+    public Page<ProductResponseDTO> searchProducts(String name, Pageable pageable) {
         if (name == null || name.isBlank()) return Page.empty();
 
         String regex = name.trim().replaceAll("\\s+", "|");
@@ -201,7 +201,7 @@ public class ProductServiceImp implements ProductService {
      * -USER SEARCH-
      */
     @Override
-    public Page<ProductResponseDTO> searchAvailableByName(String name, Pageable pageable) {
+    public Page<ProductResponseDTO> searchAvailableProducts(String name, Pageable pageable) {
         if (name == null || name.isBlank()) return Page.empty();
 
         String regex = name.trim().replaceAll("\\s+", "|");
