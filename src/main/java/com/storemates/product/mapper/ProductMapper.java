@@ -29,18 +29,12 @@ public class ProductMapper {
                 .description(entity.getDescription())
                 .url(entity.getUrl())
                 .stock(entity.getStock())
-                .subcategoryId(
-                        entity.getSubcategory() != null ? entity.getSubcategory().getId() : null
-                )
-                .subcategoryName(
-                        entity.getSubcategory() != null ? entity.getSubcategory().getName() : null
-                )
-                .categoryName(
-                        entity.getSubcategory() != null &&
-                                entity.getSubcategory().getCategory() != null
-                                ? entity.getSubcategory().getCategory().getName()
-                                : null
-                )
+                .subcategoryId(entity.getSubcategory() != null ? entity.getSubcategory().getId() : null)
+                .subcategoryName(entity.getSubcategory() != null ? entity.getSubcategory().getName() : null)
+                .categoryName(entity.getSubcategory() != null &&
+                        entity.getSubcategory().getCategory() != null
+                        ? entity.getSubcategory().getCategory().getName()
+                        : null)
                 .build();
     }
 

@@ -20,19 +20,19 @@ public class ProductAdminController {
 
     @PostMapping
     public ResponseEntity<ProductResponseDTO> create(@Valid @RequestBody ProductRequestDTO requestDTO) {
-       return ResponseEntity.status(HttpStatus.CREATED).body(productService.save(requestDTO));
+       return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(requestDTO));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> update(
             @PathVariable Long id,
             @Valid @RequestBody ProductRequestDTO requestDTO) {
-        return ResponseEntity.ok((productService.update(requestDTO, id)));
+        return ResponseEntity.ok((productService.updateProduct(requestDTO, id)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        productService.delete(id);
+        productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -40,7 +40,7 @@ public class ProductAdminController {
     @GetMapping
     public ResponseEntity<Page<ProductResponseDTO>> getAllForAdmin(
             @PageableDefault(size = 10, sort = "id") Pageable pageable) {
-        return ResponseEntity.ok(productService.listAll(pageable));
+        return ResponseEntity.ok(productService.listProducts(pageable));
     }
 
     // REPORTE DE STOCK CRÍTICO
@@ -53,6 +53,6 @@ public class ProductAdminController {
     @GetMapping("/search")
     public ResponseEntity<Page<ProductResponseDTO>> searchForAdmin(@RequestParam String name,
                                                                    @PageableDefault(size = 10) Pageable pageable) {
-        return ResponseEntity.ok(productService.searchAnyByName(name, pageable));
+        return ResponseEntity.ok(productService.searchProducts(name, pageable));
     }
 }
