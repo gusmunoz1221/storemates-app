@@ -99,6 +99,18 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<SubcategorySimpleDTO> ListSubCategoryByCategoryId(Long categoryId) {
+        if(!categoryRepository.existsById(categoryId))
+            throw new ResourceNotFoundException("La categoría ID " + categoryId + " no existe");
+
+        return subcategoryRepository.findByCategory_Id(categoryId)
+                .stream()
+                .map(categoryMapper::toSubcategorySimpleDto)
+                .toList();
+    }
+
+    @Override
     @Transactional
     public SubcategorySimpleDTO updateSubcategory(Long id, SubcategoryRequestDTO subcategoryRequest) {
         SubcategoryEntity subcategory = subcategoryRepository.findById(id)

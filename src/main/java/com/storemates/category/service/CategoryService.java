@@ -4,6 +4,7 @@ import com.storemates.category.dto.CategoryRequestDTO;
 import com.storemates.category.dto.CategoryResponseDTO;
 import com.storemates.category.dto.SubcategoryRequestDTO;
 import com.storemates.category.dto.SubcategorySimpleDTO;
+
 import java.util.List;
 
 public interface CategoryService {
@@ -28,6 +29,10 @@ public interface CategoryService {
     CategoryResponseDTO listCategoryById(Long subcategoryId);
 
     // -----subcategory----
+
+    // LISTA CATEGORIAS DADO UN ID
+    List<SubcategorySimpleDTO> ListSubCategoryByCategoryId(Long categoryId);
+
     // CREAR SUBCATEGORIA
     SubcategorySimpleDTO createSubcategory(Long categoryId, SubcategoryRequestDTO request);
 
