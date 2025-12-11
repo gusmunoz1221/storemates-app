@@ -28,19 +28,19 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     @Transactional
-    public CategoryResponseDTO createCategory(CategoryRequestDTO categoryRequest) {
-        CategoryEntity entity = categoryMapper.toCategoryEntity(categoryRequest);
+    public CategoryResponseDTO createCategory(CategoryRequestDTO request) {
+        CategoryEntity entity = categoryMapper.toCategoryEntity(request);
         CategoryEntity savedEntity = categoryRepository.save(entity);
         return categoryMapper.toCategoryResponse(savedEntity);
     }
 
     @Override
     @Transactional
-    public CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO categoryRequest) {
+    public CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO request) {
         CategoryEntity category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada ID: " + id));
 
-        categoryMapper.updateCategoryFromDto(categoryRequest, category);
+        categoryMapper.updateCategoryFromDto(request, category);
 
         return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }
@@ -85,11 +85,11 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     @Transactional
-    public SubcategorySimpleDTO createSubcategory(Long categoryId, SubcategoryRequestDTO subcategoryRequest) {
+    public SubcategorySimpleDTO createSubcategory(Long categoryId, SubcategoryRequestDTO request) {
         CategoryEntity parent = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("La categoría ID " + categoryId + " no existe"));
 
-        SubcategoryEntity sub = categoryMapper.toSubcategoryEntity(subcategoryRequest);
+        SubcategoryEntity sub = categoryMapper.toSubcategoryEntity(request);
 
         sub.setCategory(parent);
         parent.getSubcategories().add(sub);
@@ -112,11 +112,11 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     @Transactional
-    public SubcategorySimpleDTO updateSubcategory(Long id, SubcategoryRequestDTO subcategoryRequest) {
+    public SubcategorySimpleDTO updateSubcategory(Long id, SubcategoryRequestDTO request) {
         SubcategoryEntity subcategory = subcategoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Subcategoría no encontrada ID: " + id));
 
-        categoryMapper.updateSubcategoryFromDto(subcategoryRequest, subcategory);
+        categoryMapper.updateSubcategoryFromDto(request, subcategory);
 
         return categoryMapper.toSubcategorySimpleDto(subcategoryRepository.save(subcategory));
     }

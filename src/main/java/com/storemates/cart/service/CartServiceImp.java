@@ -4,6 +4,7 @@ import com.storemates.cart.dto.CartResponseDTO;
 import com.storemates.cart.entity.CartEntity;
 import com.storemates.cart.entity.CartItemEntity;
 import com.storemates.cart.mapper.CartMapper;
+import com.storemates.cart.repository.CartItemRepository;
 import com.storemates.cart.repository.CartRepository;
 import com.storemates.exception.BusinessException;
 import com.storemates.exception.ResourceNotFoundException;
@@ -12,7 +13,6 @@ import com.storemates.product.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.util.Optional;
 
@@ -20,10 +20,10 @@ import java.util.Optional;
 @AllArgsConstructor
 @Transactional
 public class CartServiceImp implements CartService{
-
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final CartMapper cartMapper;
+    private final CartItemRepository cartItemRepository;
 
     @Override
     public CartResponseDTO getCart(String sessionId) {
@@ -44,9 +44,7 @@ public class CartServiceImp implements CartService{
 
         CartEntity cart = getOrCreateCart(sessionId);
 
-        Optional<CartItemEntity> existingItem = cart.getItems().stream()
-                .filter(item -> item.getProduct().getId().equals(productId))
-                .findFirst();
+        Optional<CartItemEntity> existingItem = cartItemRepository.findByCartIdAndProductId(cart.getId(), productId);
 
         // CASO A: se supone que esta el cart -> sumamos el stock
         if (existingItem.isPresent()) {

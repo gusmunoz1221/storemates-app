@@ -17,16 +17,16 @@ public class SubCategoryAdminController {
 
     @PostMapping("/{id}")
     public ResponseEntity<SubcategorySimpleDTO> create(@PathVariable Long categoryId,
-                                                        @Valid @RequestBody SubcategoryRequestDTO requestDTO){
+                                                        @Valid @RequestBody SubcategoryRequestDTO request){
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(categoryService.createSubcategory(categoryId,requestDTO));
+                .body(categoryService.createSubcategory(categoryId,request));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<SubcategorySimpleDTO> update(@PathVariable Long categoryId,
-                                                       @Valid @RequestBody SubcategoryRequestDTO requestDTO){
-        return ResponseEntity.ok(categoryService.updateSubcategory(categoryId,requestDTO));
+                                                       @Valid @RequestBody SubcategoryRequestDTO request){
+        return ResponseEntity.ok(categoryService.updateSubcategory(categoryId,request));
     }
 
     @DeleteMapping("/{id}")

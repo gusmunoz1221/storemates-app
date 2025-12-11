@@ -6,6 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface SubcategoryRepository extends JpaRepository<SubcategoryEntity,Long> {
-    List<SubcategoryEntity> findAll();
     List<SubcategoryEntity> findByCategory_Id(Long categoryId);
 }

@@ -50,35 +50,38 @@ public class OrderServiceImp implements OrderService {
 
         // convertimos CartItems en OrderItems y valido Stock
         for (CartItemEntity cartItem : cart.getItems()) {
+
             ProductEntity product = cartItem.getProduct();
             int quantity = cartItem.getQuantity();
 
             if (product.getStock() < quantity)
                 throw new BusinessException("no hay stock suficiente del producto: " + product.getName());
 
+            // actualizar stock
             product.setStock(product.getStock() - quantity);
-
-            productRepository.save(product);
 
             OrderItemEntity orderItem = new OrderItemEntity();
             orderItem.setOrder(order);
             orderItem.setProduct(product);
             orderItem.setQuantity(quantity);
-            orderItem.setPrice(product.getPrice());
+            orderItem.setPrice(cartItem.getUnitPrice()); // --precio historico--
 
             orderItems.add(orderItem);
 
-            BigDecimal itemSubtotal = product.getPrice().multiply(BigDecimal.valueOf(quantity)); //price * qauntity
+            BigDecimal itemSubtotal = orderItem.getPrice()
+                    .multiply(BigDecimal.valueOf(quantity));
+
             finalTotal = finalTotal.add(itemSubtotal);
-
-            order.setItems(orderItems);
-            order.setTotalAmount(finalTotal);
-
-            cartRepository.delete(cart);
-            orderRepository.save(order);
         }
 
-        return orderMapper.entityToDto(order);
+        order.setItems(orderItems);
+        order.setTotalAmount(finalTotal);
+
+        OrderEntity savedOrder = orderRepository.save(order);
+
+        cartRepository.delete(cart);
+
+        return orderMapper.entityToDto(savedOrder);
     }
 
     @Override

@@ -1,0 +1,51 @@
+package com.storemates.order.controller;
+
+import com.storemates.order.dto.OrderResponseDTO;
+import com.storemates.order.service.OrderService;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+
+@RestController
+@RequestMapping("/admin/orders")
+@AllArgsConstructor
+public class OrderAdminController {
+    private final OrderService orderService;
+
+    @GetMapping
+    public ResponseEntity<Page<OrderResponseDTO>> getAllOrders(
+            @PageableDefault(size = 10, sort = "createdAt") Pageable pageable) {
+        return ResponseEntity.ok(orderService.getAllOrders(pageable));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderResponseDTO> getOrderById(@PathVariable Long id) {
+        return ResponseEntity.ok(orderService.getOrderById(id));
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<Page<OrderResponseDTO>> getOrdersByStatus(@RequestParam String status,
+                                                                    @PageableDefault(size = 10, sort = "createdAt") Pageable pageable) {
+        return ResponseEntity.ok(orderService.filterOrdersByStatus(status, pageable));
+    }
+
+    // Eejemlo: /admin/orders/report?start=2025-11-01T00:00:00&end=2025-11-30T23:59:59
+    @GetMapping("/report")
+    public ResponseEntity<Page<OrderResponseDTO>> getOrdersByDateRange(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
+            @PageableDefault(size = 10, sort = "createdAt") Pageable pageable) {
+        return ResponseEntity.ok(orderService.findByCreatedAtBetween(start, end, pageable));
+    }
+
+    @GetMapping("/total-sales")
+    public ResponseEntity<Double> getTotalSales() {
+        return ResponseEntity.ok(orderService.getTotalSales());
+    }
+}

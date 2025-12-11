@@ -19,15 +19,15 @@ public class ProductAdminController {
     private final ProductServiceImp productService;
 
     @PostMapping
-    public ResponseEntity<ProductResponseDTO> create(@Valid @RequestBody ProductRequestDTO requestDTO) {
-       return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(requestDTO));
+    public ResponseEntity<ProductResponseDTO> create(@Valid @RequestBody ProductRequestDTO request) {
+       return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(request));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> update(
             @PathVariable Long id,
-            @Valid @RequestBody ProductRequestDTO requestDTO) {
-        return ResponseEntity.ok((productService.updateProduct(requestDTO, id)));
+            @Valid @RequestBody ProductRequestDTO request) {
+        return ResponseEntity.ok((productService.updateProduct(request, id)));
     }
 
     @DeleteMapping("/{id}")

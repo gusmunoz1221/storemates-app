@@ -56,23 +56,29 @@ public class ProductServiceImp implements ProductService {
      */
     @Transactional
     @Override
-    public ProductResponseDTO updateProduct(ProductRequestDTO productRequest, Long productId) {
+    public ProductResponseDTO updateProduct(ProductRequestDTO request, Long productId) {
 
         ProductEntity product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("El producto con ID: " + productId + " no existe"));
 
-        if (!product.getName().equalsIgnoreCase(productRequest.getName()) &&
-                productRepository.existsByName(productRequest.getName()))
-            throw new BusinessException("producto con el nombre: "+productRequest.getName()+" ya existe");
+        if (!product.getName().equalsIgnoreCase(request.getName()) &&
+                productRepository.existsByName(request.getName()))
+            throw new BusinessException("producto con el nombre: "+request.getName()+" ya existe");
 
         SubcategoryEntity subcategory = product.getSubcategory();
-        if (productRequest.getSubcategoryId() != null &&
-                !productRequest.getSubcategoryId().equals(product.getSubcategory().getId()))
-            subcategory = subcategoryRepository.findById(productRequest.getSubcategoryId())
+        if (request.getSubcategoryId() != null &&
+                !request.getSubcategoryId().equals(product.getSubcategory().getId()))
+            subcategory = subcategoryRepository.findById(request.getSubcategoryId())
                     .orElseThrow(() ->
-                                    new ResourceNotFoundException("Subcategoría no encontrada id: "+ productRequest.getSubcategoryId()));
+                                    new ResourceNotFoundException("Subcategoría no encontrada id: "+ request.getSubcategoryId()));
 
-        productMapper.updateEntity(product, productRequest, subcategory);
+        if (request.getStock() < 0)
+            throw new BusinessException("El stock no puede ser negativo");
+
+        if (request.getPrice().compareTo(BigDecimal.ZERO) < 0)
+            throw new BusinessException("El precio no puede ser negativo");
+
+        productMapper.updateEntity(product, request, subcategory);
 
         return productMapper.entityToDto(product);
     }

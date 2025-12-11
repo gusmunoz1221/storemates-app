@@ -16,14 +16,14 @@ public class CategoryAdminController {
     private final CategoryServiceImp categoryService;
 
     @PostMapping
-    public ResponseEntity<CategoryResponseDTO> create(@Valid @RequestBody CategoryRequestDTO requestDTO){
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.createCategory(requestDTO));
+    public ResponseEntity<CategoryResponseDTO> create(@Valid @RequestBody CategoryRequestDTO request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.createCategory(request));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CategoryResponseDTO> update(@PathVariable Long id,
-                                                      @Valid @RequestBody CategoryRequestDTO requestDTO){
-        return ResponseEntity.ok(categoryService.updateCategory(id,requestDTO));
+                                                      @Valid @RequestBody CategoryRequestDTO request){
+        return ResponseEntity.ok(categoryService.updateCategory(id,request));
     }
 
     @DeleteMapping("/{id}")

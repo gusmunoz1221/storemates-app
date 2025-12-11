@@ -38,11 +38,11 @@ public class ProductCustomerController {
     }
 
     // FILTRA POR CATEGORÍA
-    @GetMapping("/filter/category/{categoryId}")
+    @GetMapping("/filter/category/{id}")
     public ResponseEntity<Page<ProductResponseDTO>> filterByCategory(
-            @PathVariable Long categoryId,
+            @PathVariable Long id,
             @PageableDefault(size = 10) Pageable pageable) {
-        return ResponseEntity.ok(productService.filterProductsByCategory(categoryId, pageable));
+        return ResponseEntity.ok(productService.filterProductsByCategory(id, pageable));
     }
 
     // FILTRA POR RANGO DE PRECIO
