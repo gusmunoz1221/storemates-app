@@ -1,6 +1,8 @@
 package com.storemates.order.controller;
 
 import com.storemates.order.dto.OrderResponseDTO;
+import com.storemates.order.dto.TotalSales;
+import com.storemates.order.entity.OrderStatus;
 import com.storemates.order.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,7 +32,7 @@ public class OrderAdminController {
     }
 
     @GetMapping("/status")
-    public ResponseEntity<Page<OrderResponseDTO>> getOrdersByStatus(@RequestParam String status,
+    public ResponseEntity<Page<OrderResponseDTO>> getOrdersByStatus(@RequestParam OrderStatus status,
                                                                     @PageableDefault(size = 10, sort = "createdAt") Pageable pageable) {
         return ResponseEntity.ok(orderService.filterOrdersByStatus(status, pageable));
     }
@@ -45,7 +47,7 @@ public class OrderAdminController {
     }
 
     @GetMapping("/total-sales")
-    public ResponseEntity<Double> getTotalSales() {
+    public ResponseEntity<TotalSales> getTotalSales() {
         return ResponseEntity.ok(orderService.getTotalSales());
     }
 }

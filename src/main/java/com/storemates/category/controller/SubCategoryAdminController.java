@@ -24,9 +24,9 @@ public class SubCategoryAdminController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SubcategorySimpleDTO> update(@PathVariable Long categoryId,
-                                                       @Valid @RequestBody SubcategoryRequestDTO request){
-        return ResponseEntity.ok(categoryService.updateSubcategory(categoryId,request));
+    public ResponseEntity<SubcategorySimpleDTO> update(@PathVariable Long id,
+                                                       @RequestBody SubcategoryRequestDTO request){
+        return ResponseEntity.ok(categoryService.updateSubcategory(id,request));
     }
 
     @DeleteMapping("/{id}")

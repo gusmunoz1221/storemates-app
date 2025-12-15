@@ -5,7 +5,9 @@ import com.storemates.cart.entity.CartItemEntity;
 import com.storemates.cart.repository.CartRepository;
 import com.storemates.exception.BusinessException;
 import com.storemates.exception.ResourceNotFoundException;
+import com.storemates.order.dto.TotalSales;
 import com.storemates.order.entity.OrderItemEntity;
+import com.storemates.order.entity.OrderStatus;
 import com.storemates.order.mapper.OrderMapper;
 import com.storemates.order.dto.OrderRequestDTO;
 import com.storemates.order.dto.OrderResponseDTO;
@@ -103,7 +105,7 @@ public class OrderServiceImp implements OrderService {
     public OrderResponseDTO getOrderById(Long id) {
         return orderRepository.findById(id)
                 .map(orderMapper::entityToDto)
-                .orElseThrow(() -> new ResourceNotFoundException("no se pudo encontrar el carrito o ha expirado"));
+                .orElseThrow(() -> new ResourceNotFoundException("la orden con el ID: "+id+" no existe"));
     }
 
     /**
@@ -121,7 +123,7 @@ public class OrderServiceImp implements OrderService {
      *  -retorna el resultado paginado
      */
     @Override
-    public Page<OrderResponseDTO> filterOrdersByStatus(String status, Pageable pageable) {
+    public Page<OrderResponseDTO> filterOrdersByStatus(OrderStatus status, Pageable pageable) {
 
         return orderRepository
                 .findByStatus(status,pageable)
@@ -139,10 +141,10 @@ public class OrderServiceImp implements OrderService {
     }
 
     /**
-     *  -retorna el total de ventas acumuladas
+     *  -retorna el total de ventas acumuladas con el total de clientes
      */
     @Override
-    public Double getTotalSales() {
-        return orderRepository.getTotalSales();
+    public TotalSales getTotalSales() {
+        return orderRepository.getSalesStats();
     }
 }

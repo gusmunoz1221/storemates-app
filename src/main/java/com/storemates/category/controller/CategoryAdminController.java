@@ -22,7 +22,7 @@ public class CategoryAdminController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CategoryResponseDTO> update(@PathVariable Long id,
-                                                      @Valid @RequestBody CategoryRequestDTO request){
+                                                      @RequestBody CategoryRequestDTO request){
         return ResponseEntity.ok(categoryService.updateCategory(id,request));
     }
 

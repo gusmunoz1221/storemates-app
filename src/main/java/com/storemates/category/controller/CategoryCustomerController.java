@@ -23,7 +23,7 @@ public class CategoryCustomerController {
         return ResponseEntity.ok(categoryService.listCategories());
     }
 
-    @GetMapping
+    @GetMapping("/sub")
     public ResponseEntity<List<CategoryResponseDTO>> getAllCategoriesWithSub() {
         return ResponseEntity.ok(categoryService.listCategoriesWithSubcategories());
     }
