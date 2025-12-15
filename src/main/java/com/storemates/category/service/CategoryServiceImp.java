@@ -25,7 +25,10 @@ public class CategoryServiceImp implements CategoryService {
     private final CategoryMapper categoryMapper;
 
     //-----CATEGORIAS------
-
+    /**
+     *  -crea una nueva categoría a partir del DTO recibido
+     *  -persiste la categoría y retorna su DTO
+     */
     @Override
     @Transactional
     public CategoryResponseDTO createCategory(CategoryRequestDTO request) {
@@ -34,6 +37,10 @@ public class CategoryServiceImp implements CategoryService {
         return categoryMapper.toCategoryResponse(savedEntity);
     }
 
+    /**
+     *  -actualiza una categoría existente
+     *  -lanza ResourceNotFoundException si la categoría no existe
+     */
     @Override
     @Transactional
     public CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO request) {
@@ -45,6 +52,12 @@ public class CategoryServiceImp implements CategoryService {
         return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }
 
+    /**
+     *  -elimina una categoría por su ID
+     *  -valida que no tenga subcategorías asociadas
+     *  -lanza ResourceNotFoundException si la categoría no existe
+     *  -lanza BusinessException si tiene subcategorías asociadas
+     */
     @Override
     @Transactional
     public void deleteCategory(Long id) {
@@ -65,6 +78,9 @@ public class CategoryServiceImp implements CategoryService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     *  -retorna todas las categorías con sus subcategorías
+     */
     @Override
     @Transactional(readOnly = true)
     public List<CategoryResponseDTO> listCategoriesWithSubcategories() {
@@ -73,6 +89,10 @@ public class CategoryServiceImp implements CategoryService {
                 .toList();
     }
 
+    /**
+     *  -retorna una categoría por su ID
+     *  -lanza ResourceNotFoundException si la categoría no existe
+     */
     @Override
     @Transactional(readOnly = true)
     public CategoryResponseDTO listCategoryById(Long id) {
@@ -82,7 +102,13 @@ public class CategoryServiceImp implements CategoryService {
     }
 
     //    ----SUBCATEGORIAS------
-
+    /**
+     *  -crea una subcategoría asociada a una categoría existente
+     *  -valida que la categoría padre exista
+     *  -asocia la subcategoría a la categoría
+     *  -persiste la subcategoría y retorna su DTO simple
+     *  -lanza ResourceNotFoundException si la categoría no existe
+     */
     @Override
     @Transactional
     public SubcategorySimpleDTO createSubcategory(Long categoryId, SubcategoryRequestDTO request) {
@@ -97,7 +123,11 @@ public class CategoryServiceImp implements CategoryService {
         SubcategoryEntity saved = subcategoryRepository.save(sub);
         return categoryMapper.toSubcategorySimpleDto(saved);
     }
-
+    /**
+     *  -retorna las subcategorías de una categoría
+     *  -valida que la categoría exista
+     *  -lanza ResourceNotFoundException si la categoría no existe
+     */
     @Override
     @Transactional(readOnly = true)
     public List<SubcategorySimpleDTO> ListSubCategoryByCategoryId(Long categoryId) {
@@ -110,6 +140,10 @@ public class CategoryServiceImp implements CategoryService {
                 .toList();
     }
 
+    /**
+     *  -actualiza una subcategoría existente
+     *  -lanza ResourceNotFoundException si la subcategoría no existe
+     */
     @Override
     @Transactional
     public SubcategorySimpleDTO updateSubcategory(Long id, SubcategoryRequestDTO request) {
@@ -121,6 +155,13 @@ public class CategoryServiceImp implements CategoryService {
         return categoryMapper.toSubcategorySimpleDto(subcategoryRepository.save(subcategory));
     }
 
+    /**
+     *  -elimina una subcategoría por su ID
+     *  -valida que no tenga productos asociados
+     *  -remueve la subcategoría de la categoría padre
+     *  -lanza ResourceNotFoundException si la subcategoría no existe
+     *  -lanza BusinessException si tiene productos asociados
+     */
     @Override
     @Transactional
     public void deleteSubcategory(Long id) {

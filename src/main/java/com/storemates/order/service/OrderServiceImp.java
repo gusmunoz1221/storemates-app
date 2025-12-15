@@ -32,7 +32,18 @@ public class OrderServiceImp implements OrderService {
     private final ProductRepository productRepository;
     private final OrderMapper orderMapper;
 
-
+    /**
+     *  -crea una orden a partir del carrito asociado a la sesión
+     *  -valida que el carrito exista y no esté vacío
+     *  -convierte los items del carrito en items de la orden
+     *  -valida stock disponible por producto
+     *  -actualiza el stock de los productos
+     *  -calcula el total final de la orden
+     *  -persiste la orden y elimina el carrito
+     *  -retorna la orden creada en un DTO
+     *  -lanza ResourceNotFoundException si el carrito no existe o está vacío
+     *  -lanza BusinessException si no hay stock suficiente
+     */
     @Transactional
     @Override
     public OrderResponseDTO createOrder(OrderRequestDTO request) {
@@ -84,6 +95,10 @@ public class OrderServiceImp implements OrderService {
         return orderMapper.entityToDto(savedOrder);
     }
 
+    /**
+     *  -retorna una orden por su ID
+     *  -lanza ResourceNotFoundException si la orden no existe
+     */
     @Override
     public OrderResponseDTO getOrderById(Long id) {
         return orderRepository.findById(id)
@@ -91,6 +106,9 @@ public class OrderServiceImp implements OrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("no se pudo encontrar el carrito o ha expirado"));
     }
 
+    /**
+     *  -retorna todas las órdenes paginadas
+     */
     @Override
     public Page<OrderResponseDTO> getAllOrders(Pageable pageable) {
         return orderRepository
@@ -98,6 +116,10 @@ public class OrderServiceImp implements OrderService {
                 .map(orderMapper::entityToDto);
     }
 
+    /**
+     *  -filtra órdenes por estado
+     *  -retorna el resultado paginado
+     */
     @Override
     public Page<OrderResponseDTO> filterOrdersByStatus(String status, Pageable pageable) {
 
@@ -106,6 +128,9 @@ public class OrderServiceImp implements OrderService {
                 .map(orderMapper::entityToDto);
     }
 
+    /**
+     *  -retorna órdenes creadas entre dos fechas pagionado
+     */
     @Override
     public Page<OrderResponseDTO> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end, Pageable pageable) {
         return orderRepository
@@ -113,6 +138,9 @@ public class OrderServiceImp implements OrderService {
                 .map(orderMapper::entityToDto);
     }
 
+    /**
+     *  -retorna el total de ventas acumuladas
+     */
     @Override
     public Double getTotalSales() {
         return orderRepository.getTotalSales();
