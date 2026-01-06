@@ -97,7 +97,7 @@ public class ProductServiceImp implements ProductService {
 
     /**
      *  -retorna los detalles del producto
-     *  -cuando un customer hace click en la foto
+     *  -cuando un CUSTOMER hace click en la foto
      * */
     public ProductResponseDTO findById(Long id){
         return productRepository.findById(id)

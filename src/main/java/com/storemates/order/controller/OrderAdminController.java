@@ -37,7 +37,7 @@ public class OrderAdminController {
         return ResponseEntity.ok(orderService.filterOrdersByStatus(status, pageable));
     }
 
-    // Eejemlo: /admin/orders/report?start=2025-11-01T00:00:00&end=2025-11-30T23:59:59
+    // Eejemlo: /ADMIN/orders/report?start=2025-11-01T00:00:00&end=2025-11-30T23:59:59
     @GetMapping("/report")
     public ResponseEntity<Page<OrderResponseDTO>> getOrdersByDateRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
