@@ -5,5 +5,5 @@ public enum OrderStatus{
     PAID,       // Pago exitoso (MercadoPago aprobado)
     SHIPPED,    // Enviado por correo
     DELIVERED,  // Entregado al cliente
-    CANCELLED   // Pago rechazado o cancelado por admin
+    CANCELLED   // Pago rechazado o cancelado por ADMIN
 }

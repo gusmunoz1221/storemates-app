@@ -114,3 +114,15 @@ CREATE TABLE order_items (
         REFERENCES orders(id)
         ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+-- ================================
+-- ADMINS
+-- ================================
+CREATE TABLE users (
+    id BIGSERIAL PRIMARY KEY,
+    firstname VARCHAR(100),
+    lastname VARCHAR(100),
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(50) NOT NULL
+);
