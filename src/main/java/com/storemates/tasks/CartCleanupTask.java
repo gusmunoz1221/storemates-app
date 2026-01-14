@@ -21,10 +21,10 @@ public class CartCleanupTask {
      * -cuyo campo updatedAt sea anterior a ese momento
      */
     //@Scheduled(cron = "0 0 * * * *") // 1h
-    @Scheduled(cron = "0 */5 * * * *") // 5m
+    @Scheduled(cron = "0 0 * * * *")
     @Transactional
     public void cleanupOldCarts() {
-        LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(5);
+        LocalDateTime cutoffTime = LocalDateTime.now().minusMinutes(30);
 
         log.info("Iniciando limpieza de carritos viejos cutoff = {}", cutoffTime);
 

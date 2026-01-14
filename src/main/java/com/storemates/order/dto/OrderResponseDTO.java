@@ -4,15 +4,12 @@ import com.storemates.order.entity.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class OrderResponseDTO {
     private Long id;
@@ -21,6 +18,6 @@ public class OrderResponseDTO {
     private BigDecimal totalAmount;
     private OrderStatus status;
     private LocalDateTime createdAt;
-
+    private String checkoutUrl;
     private List<OrderItemResponseDTO> items;
 }

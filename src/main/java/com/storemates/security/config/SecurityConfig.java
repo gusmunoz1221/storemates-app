@@ -36,6 +36,8 @@ public class SecurityConfig {
                         // CHECKOUT
                         .requestMatchers(HttpMethod.POST, "/orders").permitAll()
 
+                        .requestMatchers("/payments/**").permitAll()
+
                         // ADMIN
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 

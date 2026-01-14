@@ -4,6 +4,7 @@ import com.storemates.product.entity.ProductEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.math.BigDecimal;
@@ -36,5 +37,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Long> {
     @Query(value = "SELECT * FROM products p WHERE p.name ~* :regex AND p.stock > 0", nativeQuery = true)
     Page<ProductEntity> searchByNameRegexAvailable(@Param("regex") String regex, Pageable pageable);
 
-
+    @Modifying
+    @Query("UPDATE ProductEntity p SET p.stock = p.stock - :qty WHERE p.id = :id AND p.stock >= :qty")
+    int decreaseStock(@Param("id") Long id, @Param("qty") int qty);
 }
