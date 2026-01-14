@@ -48,42 +48,43 @@ public class CartServiceImp implements CartService{
      */
     @Override
     public CartResponseDTO addToCart(String sessionId, Long productId, Integer quantity) {
-        if (quantity <= 0)
-            throw new BusinessException("La cantidad debe ser mayor a 0");
-
+        if (quantity <= 0) throw new BusinessException("La cantidad debe ser mayor a 0");
         ProductEntity product = productRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado ID: " + productId));
+                .orElseThrow(() -> new ResourceNotFoundException("Producto no encontrado"));
+        if (product.getStock() < quantity) throw new BusinessException("Sin stock suficiente");
 
-        if (product.getStock() < quantity)
-            throw new BusinessException("No hay suficiente stock. Disponible: " + product.getStock());
-
+        // obtenemos (o creamos) el carrito con la lógica nueva del UUID
         CartEntity cart = getOrCreateCart(sessionId);
 
-        Optional<CartItemEntity> existingItem = cartItemRepository.findByCartIdAndProductId(cart.getId(), productId);
+        // buscamos en la LISTA en memoria (Ahorramos una consulta a BD)
+        Optional<CartItemEntity> existingItem = cart.getItems().stream()
+                .filter(item -> item.getProduct().getId().equals(productId))
+                .findFirst();
 
-        // CASO A: se supone que esta el cart -> sumamos el stock
         if (existingItem.isPresent()) {
+            // CASO A: Sumar cantidad
             CartItemEntity item = existingItem.get();
             int newQuantity = item.getQuantity() + quantity;
 
-            // revalido stock con la nueva cantidad total
             if (product.getStock() < newQuantity)
-                throw new BusinessException("Stock insuficiente, no se puede agregar mas.");
+                throw new BusinessException("Stock insuficiente para agregar más.");
 
             item.setQuantity(newQuantity);
         } else {
-        // CASO B: se supone nuevo -> Creamos el item para add al cart
+            // CASO B: Crear nuevo item
             CartItemEntity newItem = new CartItemEntity();
-            newItem.setCart(cart);
+            newItem.setCart(cart); // Vinculación bidireccional importante
             newItem.setProduct(product);
             newItem.setQuantity(quantity);
             newItem.setUnitPrice(product.getPrice());
 
-            cart.getItems().add(newItem);
+            cart.getItems().add(newItem); // Agregamos a la lista del padre
         }
 
-        // se recalcula el TOTAL del carrito y guardamos
         recalculateTotal(cart);
+
+        // Al guardar el padre (Cart), se guardan los hijos (Items) automáticamente
+        // si tienes CascadeType.ALL en tu entidad Cart.
         CartEntity savedCart = cartRepository.save(cart);
 
         return cartMapper.entityToDto(savedCart);
@@ -132,11 +133,10 @@ public class CartServiceImp implements CartService{
     private CartEntity getOrCreateCart(String sessionId) {
         return cartRepository.findBySessionId(sessionId)
                 .orElseGet(() -> {
-                    // si no existe creamos uno nuevo vacío
-                    CartEntity newCart = new CartEntity();
-                    newCart.setSessionId(sessionId);
-                    newCart.setTotalAmount(BigDecimal.ZERO);
-                    return cartRepository.save(newCart);
+                    CartEntity cart = new CartEntity();
+                    cart.setSessionId(sessionId);
+                    cart.setTotalAmount(BigDecimal.ZERO);
+                    return cart;
                 });
     }
 

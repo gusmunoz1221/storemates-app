@@ -15,7 +15,6 @@ public class CartItemEntity {
     private Long id;
 
     private Integer quantity;
-
     private BigDecimal unitPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)

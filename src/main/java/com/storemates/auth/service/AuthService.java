@@ -71,7 +71,7 @@ public class AuthService {
 
         } catch (AuthenticationException e) {
             log.warn("Intento de login fallido para el email: {}", request.getEmail());
-            throw new BadCredentialsException("Credenciales inválidas");
+            throw new BadCredentialsException("credenciales invalidas");
         }
     }
 }

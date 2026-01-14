@@ -79,17 +79,14 @@ CREATE TABLE orders (
 
     customer_name VARCHAR(255),
     customer_email VARCHAR(255),
-    customer_phone VARCHAR(100),
-
-    shipping_address TEXT,
-    shipping_city VARCHAR(255),
-    shipping_zip VARCHAR(50),
-
-    total_amount NUMERIC(15,2),
-
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-
-    status VARCHAR(50) NOT NULL DEFAULT 'PENDING'
+    customer_phone VARCHAR(50),
+    shipping_address VARCHAR(255),
+    shipping_city VARCHAR(100),
+    shipping_zip VARCHAR(20),
+    total_amount NUMERIC(19, 2),
+    cart_id BIGINT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    status order_status NOT NULL
 );
 
 -- ================================
@@ -100,7 +97,6 @@ CREATE TABLE order_items (
 
     quantity INTEGER NOT NULL,
     price NUMERIC(15,2) NOT NULL,
-
     product_id BIGINT,
     order_id BIGINT,
 
