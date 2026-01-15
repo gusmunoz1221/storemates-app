@@ -7,6 +7,7 @@ import com.storemates.cart.entity.CartItemEntity;
 import com.storemates.cart.repository.CartRepository;
 import com.storemates.exception.BusinessException;
 import com.storemates.exception.ResourceNotFoundException;
+import com.storemates.notification.EmailService;
 import com.storemates.order.dto.TotalSales;
 import com.storemates.order.entity.OrderItemEntity;
 import com.storemates.order.entity.OrderStatus;
@@ -32,6 +33,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 @Service
 @AllArgsConstructor
@@ -44,6 +46,7 @@ public class OrderServiceImp implements OrderService {
     private final PaymentService paymentService;
     // inyectamos para controlar la transacción manualmente
     private final TransactionTemplate transactionTemplate;
+    private final EmailService emailService;
 
     /**
      * - Crea una orden a partir del carrito asociado a la sesión
@@ -65,6 +68,9 @@ public class OrderServiceImp implements OrderService {
 
             if (cart.getItems().isEmpty())
                 throw new ResourceNotFoundException("El carrito está vacío");
+
+            if(!isValidMail(request.getCustomerEmail()))
+                throw new IllegalArgumentException("el correo no es valido!!");
 
             OrderEntity order = orderMapper.requestToEntity(request);
             List<OrderItemEntity> orderItems = new ArrayList<>();
@@ -214,6 +220,8 @@ public class OrderServiceImp implements OrderService {
         order.setStatus(OrderStatus.PAID);
         orderRepository.save(order);
 
+        //PARA EL ENVIO DEL MAIL PASAMOS LA ENTITY ORDER
+        emailService.sendOrderConfirmation(order);
         cartRepository.deleteById(order.getCartId());
     }
 
@@ -252,6 +260,11 @@ public class OrderServiceImp implements OrderService {
             return Long.parseLong(payload.get("id").toString());
 
         throw new BusinessException("No se pudo extraer paymentId del payload");
+    }
+
+    public boolean isValidMail(String mail){
+        String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}$";
+        return Pattern.matches(regex, mail);
     }
 
 

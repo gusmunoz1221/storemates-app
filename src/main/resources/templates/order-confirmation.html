@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* -----FONDO GENERAL-----*/
+        body { font-family: 'Helvetica', 'Arial', sans-serif; background-color: #e0e0e0; margin: 0; padding: 0; }
+
+        /* -----CONTENEDOR PRINCIPAL-----*/
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #fdfbf7;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        /*-----HEADER-----*/
+        .header {
+            background: linear-gradient(135deg, #1b5e20 0%, #080808 100%);
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+        }
+        .header h1 { margin: 0; font-size: 28px; letter-spacing: 1px; }
+
+        .content { padding: 30px; color: #333333; line-height: 1.6; }
+
+        /* -----CAJA DE INFO---- */
+        .order-info {
+            background-color: #ffffff; /* Blanco puro */
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2E7D32;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombrita suave */
+        }
+
+        /* -----TABLA----- */
+        .items-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+        .items-table th {
+            background-color: #e6e3dd; /* Un gris/beige un poco más oscuro que el fondo */
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+            color: #444;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+        .items-table td { padding: 12px; border-bottom: 1px solid #e6e3dd; }
+
+        .total-section { text-align: right; margin-top: 20px; padding-top: 15px; border-top: 2px solid #2E7D32; }
+        .total-label { font-size: 14px; color: #666; margin-right: 10px; }
+        .total-price { font-size: 24px; font-weight: bold; color: #2E7D32; }
+
+        .btn-container { text-align: center; margin-top: 30px; margin-bottom: 20px; }
+        .btn { display: inline-block; background-color: #2E7D32; color: #ffffff; text-decoration: none; padding: 14px 30px; border-radius: 50px; font-weight: bold; }
+
+        .footer { background-color: #333333; text-align: center; padding: 30px 20px; color: #bbbbbb; font-size: 12px; }
+        .social-icons { margin: 20px 0; }
+        .social-img { width: 32px; height: 32px; border-radius: 50%; background-color: white; padding: 2px; margin: 0 5px; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="header">
+        <img src="https://cdn-icons-png.flaticon.com/512/3224/3224716.png"
+             alt="Logo StoreMates"
+             style="width: 60px; height: 60px; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto; background-color: white; border-radius: 50%; padding: 8px;">
+
+        <h1>StoreMates 🧉</h1>
+        <p style="margin: 5px 0 0 0; font-size: 14px; opacity: 0.8; color: #ddd;">Tu compañero de mates</p>
+    </div>
+
+    <div class="content">
+        <h2 style="color: #2E7D32;">¡Hola, <span th:text="${order.customerName}">Usuario</span>!</h2>
+        <p>Tu pago ha sido procesado correctamente.</p>
+
+        <div class="order-info">
+            <p style="margin: 0;"><strong>Orden Nro:</strong> #<span th:text="${order.id}">000</span></p>
+            <p style="margin: 5px 0 0 0; font-size: 13px; color: #666;">Estado: Pagado ✅</p>
+        </div>
+
+        <table class="items-table">
+            <thead>
+            <tr>
+                <th>Producto</th>
+                <th style="text-align: center;">Cant.</th>
+                <th style="text-align: right;">Precio</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${order.items}">
+                <td th:text="${item.product.name}">Mate de Prueba</td>
+                <td style="text-align: center;" th:text="${item.quantity}">1</td>
+                <td style="text-align: right;" th:text="'$' + ${item.price}">$5000</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="total-section">
+            <span class="total-label">PAGO TOTAL: </span>
+            <span class="total-price" th:text="'$' + ${order.totalAmount}">$10000</span>
+        </div>
+
+        <div style="margin-top: 30px; border-top: 1px dashed #ccc; padding-top: 20px;">
+            <p>Estamos preparando tu paquete ahora mismo. Te avisaremos cuando salga a despacho.</p>
+            <p style="color: #2E7D32; font-weight: bold; font-size: 16px;">
+                ¡Estamos muy contentos de que hayas elegido nuestros productos!
+            </p>
+        </div>
+
+        <div class="btn-container">
+            <a href="http://localhost:8080" class="btn">Volver a la Tienda</a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Síguenos en nuestras redes:</p>
+        <div class="social-icons">
+            <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" class="social-img"></a>
+            <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" class="social-img"></a>
+            <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/3256/3256013.png" alt="Twitter" class="social-img"></a>
+        </div>
+
+        <p style="margin-bottom: 20px; color: #ccc; font-style: italic;">
+            Si tienes dudas, responde a este correo.
+        </p>
+
+        <p>StoreMates Argentina &copy; 2026</p>
+    </div>
+</div>
+</body>
+</html>
