@@ -1,8 +1,7 @@
 package com.storemates.payment.controller;
 
-import com.storemates.order.service.OrderService;
 import com.storemates.order.service.OrderServiceImp;
-import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +12,9 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/payments")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
+@Hidden
 public class PaymentController {
     private final OrderServiceImp orderService;
 

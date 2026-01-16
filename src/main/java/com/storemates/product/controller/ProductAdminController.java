@@ -3,8 +3,9 @@ package com.storemates.product.controller;
 import com.storemates.product.dto.ProductRequestDTO;
 import com.storemates.product.dto.ProductResponseDTO;
 import com.storemates.product.service.ProductServiceImp;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -14,7 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/products")
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Hidden
 public class ProductAdminController {
     private final ProductServiceImp productService;
 

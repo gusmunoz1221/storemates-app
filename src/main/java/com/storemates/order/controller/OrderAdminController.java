@@ -4,7 +4,8 @@ import com.storemates.order.dto.OrderResponseDTO;
 import com.storemates.order.dto.TotalSales;
 import com.storemates.order.entity.OrderStatus;
 import com.storemates.order.service.OrderService;
-import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.Hidden;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -16,7 +17,8 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/admin/orders")
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Hidden
 public class OrderAdminController {
     private final OrderService orderService;
 

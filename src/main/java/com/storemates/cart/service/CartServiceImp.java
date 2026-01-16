@@ -10,14 +10,15 @@ import com.storemates.exception.BusinessException;
 import com.storemates.exception.ResourceNotFoundException;
 import com.storemates.product.entity.ProductEntity;
 import com.storemates.product.repository.ProductRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Transactional
 public class CartServiceImp implements CartService{
     private final CartRepository cartRepository;
