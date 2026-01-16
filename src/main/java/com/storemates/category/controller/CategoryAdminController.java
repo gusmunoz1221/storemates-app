@@ -3,15 +3,17 @@ package com.storemates.category.controller;
 import com.storemates.category.dto.CategoryRequestDTO;
 import com.storemates.category.dto.CategoryResponseDTO;
 import com.storemates.category.service.CategoryServiceImp;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/categories")
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Hidden
 public class CategoryAdminController {
     private final CategoryServiceImp categoryService;
 

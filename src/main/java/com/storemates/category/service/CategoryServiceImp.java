@@ -11,14 +11,15 @@ import com.storemates.category.repository.CategoryRepository;
 import com.storemates.category.repository.SubcategoryRepository;
 import com.storemates.exception.BusinessException;
 import com.storemates.exception.ResourceNotFoundException;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CategoryServiceImp implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final SubcategoryRepository subcategoryRepository;

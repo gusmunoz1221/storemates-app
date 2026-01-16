@@ -3,6 +3,7 @@ package com.storemates.auth.controller;
 import com.storemates.auth.dto.AuthRequestDTO;
 import com.storemates.auth.dto.AuthResponseDTO;
 import com.storemates.auth.service.AuthService;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
+@Hidden
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;

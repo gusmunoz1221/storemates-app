@@ -8,27 +8,25 @@ import com.storemates.cart.repository.CartRepository;
 import com.storemates.exception.BusinessException;
 import com.storemates.exception.ResourceNotFoundException;
 import com.storemates.notification.EmailService;
+import com.storemates.order.dto.OrderRequestDTO;
+import com.storemates.order.dto.OrderResponseDTO;
 import com.storemates.order.dto.TotalSales;
+import com.storemates.order.entity.OrderEntity;
 import com.storemates.order.entity.OrderItemEntity;
 import com.storemates.order.entity.OrderStatus;
 import com.storemates.order.mapper.OrderMapper;
-import com.storemates.order.dto.OrderRequestDTO;
-import com.storemates.order.dto.OrderResponseDTO;
-import com.storemates.order.entity.OrderEntity;
 import com.storemates.order.repository.OrderRepository;
 import com.storemates.payment.service.PaymentService;
 import com.storemates.product.entity.ProductEntity;
 import com.storemates.product.repository.ProductRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +34,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class OrderServiceImp implements OrderService {
     private final CartRepository cartRepository;
