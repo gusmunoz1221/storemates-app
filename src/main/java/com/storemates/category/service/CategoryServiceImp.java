@@ -1,9 +1,6 @@
 package com.storemates.category.service;
 
-import com.storemates.category.dto.CategoryRequestDTO;
-import com.storemates.category.dto.CategoryResponseDTO;
-import com.storemates.category.dto.SubcategoryRequestDTO;
-import com.storemates.category.dto.SubcategorySimpleDTO;
+import com.storemates.category.dto.*;
 import com.storemates.category.entity.CategoryEntity;
 import com.storemates.category.entity.SubcategoryEntity;
 import com.storemates.category.mapper.CategoryMapper;
@@ -11,6 +8,8 @@ import com.storemates.category.repository.CategoryRepository;
 import com.storemates.category.repository.SubcategoryRepository;
 import com.storemates.exception.BusinessException;
 import com.storemates.exception.ResourceNotFoundException;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,13 +43,23 @@ public class CategoryServiceImp implements CategoryService {
      */
     @Override
     @Transactional
-    public CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO request) {
+    public CategoryResponseDTO updateCategory( @NotNull(message = "El id de la categoría es obligatorio") Long id,
+                                               @Valid CategoryPatchRequestDTO request) {
+
         CategoryEntity category = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Categoría no encontrada ID: " + id));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Categoría no encontrada ID: " + id));
+
+
+        if (request.getName() != null &&
+                !category.getName().equalsIgnoreCase(request.getName()) &&
+                categoryRepository.existsByName(request.getName()))
+            throw new BusinessException("La categoría ya existe");
+
 
         categoryMapper.updateCategoryFromDto(request, category);
 
-        return categoryMapper.toCategoryResponse(categoryRepository.save(category));
+        return categoryMapper.toCategoryResponse(category);
     }
 
     /**
@@ -147,13 +156,23 @@ public class CategoryServiceImp implements CategoryService {
      */
     @Override
     @Transactional
-    public SubcategorySimpleDTO updateSubcategory(Long id, SubcategoryRequestDTO request) {
+    public SubcategorySimpleDTO updateSubcategory(
+            @NotNull(message = "El id de la subcategoría es obligatorio") Long id,
+            @Valid SubcategoryPatchRequestDTO request) {
+
         SubcategoryEntity subcategory = subcategoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Subcategoría no encontrada ID: " + id));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Subcategoría no encontrada ID: " + id));
+
+        if (request.getName() != null &&
+                !subcategory.getName().equalsIgnoreCase(request.getName()) &&
+                subcategoryRepository.existsByName(request.getName()))
+            throw new BusinessException("La subcategoría ya existe");
+
 
         categoryMapper.updateSubcategoryFromDto(request, subcategory);
 
-        return categoryMapper.toSubcategorySimpleDto(subcategoryRepository.save(subcategory));
+        return categoryMapper.toSubcategorySimpleDto(subcategory);
     }
 
     /**

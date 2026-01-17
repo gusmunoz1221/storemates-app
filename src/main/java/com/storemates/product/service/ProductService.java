@@ -1,5 +1,6 @@
 package com.storemates.product.service;
 
+import com.storemates.product.dto.ProductPatchRequestDTO;
 import com.storemates.product.dto.ProductRequestDTO;
 import com.storemates.product.dto.ProductResponseDTO;
 import org.springframework.data.domain.Page;
@@ -11,7 +12,7 @@ public interface ProductService {
     ProductResponseDTO createProduct(ProductRequestDTO product);
 
     // ACTUALIZAR PRODUCTO
-    ProductResponseDTO updateProduct(ProductRequestDTO product, Long productId);
+    ProductResponseDTO updateProduct(ProductPatchRequestDTO product, Long productId);
 
     // ELIMINAR PRODUCTO
     void deleteProduct(Long id);

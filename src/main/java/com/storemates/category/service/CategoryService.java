@@ -1,9 +1,6 @@
 package com.storemates.category.service;
 
-import com.storemates.category.dto.CategoryRequestDTO;
-import com.storemates.category.dto.CategoryResponseDTO;
-import com.storemates.category.dto.SubcategoryRequestDTO;
-import com.storemates.category.dto.SubcategorySimpleDTO;
+import com.storemates.category.dto.*;
 
 import java.util.List;
 
@@ -14,7 +11,7 @@ public interface CategoryService {
     CategoryResponseDTO createCategory(CategoryRequestDTO request);
 
     // ACTUALIZAR CATEGORIA
-    CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO request);
+    CategoryResponseDTO updateCategory(Long id, CategoryPatchRequestDTO request);
 
     // ELIMINAR CATEGORIA
     void deleteCategory(Long id);
@@ -37,7 +34,7 @@ public interface CategoryService {
     SubcategorySimpleDTO createSubcategory(Long categoryId, SubcategoryRequestDTO request);
 
     // ACTUALIZAR SUBCATEGORIA
-    SubcategorySimpleDTO updateSubcategory(Long id, SubcategoryRequestDTO request);
+    SubcategorySimpleDTO updateSubcategory(Long id, SubcategoryPatchRequestDTO request);
 
     // ELIMINAR SUBCATEGORIA
     void deleteSubcategory(Long id);

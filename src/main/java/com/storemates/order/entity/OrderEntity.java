@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
@@ -14,6 +16,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "orders")
+@Audited
 public class OrderEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,5 +43,6 @@ public class OrderEntity {
     private OrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @NotAudited
     private List<OrderItemEntity> items = new ArrayList<>();
 }

@@ -1,5 +1,6 @@
 package com.storemates.category.controller;
 
+import com.storemates.category.dto.CategoryPatchRequestDTO;
 import com.storemates.category.dto.CategoryRequestDTO;
 import com.storemates.category.dto.CategoryResponseDTO;
 import com.storemates.category.service.CategoryServiceImp;
@@ -22,9 +23,9 @@ public class CategoryAdminController {
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.createCategory(request));
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<CategoryResponseDTO> update(@PathVariable Long id,
-                                                      @RequestBody CategoryRequestDTO request){
+                                                      @RequestBody CategoryPatchRequestDTO request){
         return ResponseEntity.ok(categoryService.updateCategory(id,request));
     }
 

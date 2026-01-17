@@ -1,5 +1,6 @@
 package com.storemates.product.controller;
 
+import com.storemates.product.dto.ProductPatchRequestDTO;
 import com.storemates.product.dto.ProductRequestDTO;
 import com.storemates.product.dto.ProductResponseDTO;
 import com.storemates.product.service.ProductServiceImp;
@@ -25,9 +26,9 @@ public class ProductAdminController {
        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(request));
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> update(@PathVariable Long id,
-                                                     @RequestBody ProductRequestDTO request) {
+                                                     @RequestBody ProductPatchRequestDTO request) {
         return ResponseEntity.ok((productService.updateProduct(request, id)));
     }
 
