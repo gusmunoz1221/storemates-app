@@ -4,11 +4,14 @@ import com.storemates.category.entity.SubcategoryEntity;
 import com.storemates.category.repository.SubcategoryRepository;
 import com.storemates.exception.BusinessException;
 import com.storemates.exception.ResourceNotFoundException;
+import com.storemates.product.dto.ProductPatchRequestDTO;
 import com.storemates.product.dto.ProductRequestDTO;
 import com.storemates.product.dto.ProductResponseDTO;
 import com.storemates.product.entity.ProductEntity;
 import com.storemates.product.mapper.ProductMapper;
 import com.storemates.product.repository.ProductRepository;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -56,27 +59,36 @@ public class ProductServiceImp implements ProductService {
      */
     @Transactional
     @Override
-    public ProductResponseDTO updateProduct(ProductRequestDTO request, Long productId) {
+    public ProductResponseDTO updateProduct(@Valid ProductPatchRequestDTO request,
+                                            @NotNull(message = "El id del producto es obligatorio") Long productId){
 
         ProductEntity product = productRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("El producto con ID: " + productId + " no existe"));
+                .orElseThrow(() -> new ResourceNotFoundException("El produ  cto con ID: " + productId + " no existe"));
 
-        if (!product.getName().equalsIgnoreCase(request.getName()) &&
+        if (request.getName() != null &&
+                !product.getName().equalsIgnoreCase(request.getName()) &&
                 productRepository.existsByName(request.getName()))
-            throw new BusinessException("producto con el nombre: "+request.getName()+" ya existe");
+            throw new BusinessException(
+                    "El producto con nombre '" + request.getName() + "' ya existe");
 
-        SubcategoryEntity subcategory = product.getSubcategory();
-        if (request.getSubcategoryId() != null &&
-                !request.getSubcategoryId().equals(product.getSubcategory().getId()))
-            subcategory = subcategoryRepository.findById(request.getSubcategoryId())
-                    .orElseThrow(() ->
-                                    new ResourceNotFoundException("Subcategoría no encontrada id: "+ request.getSubcategoryId()));
 
-        if (request.getStock() < 0)
+        if (request.getStock() != null && request.getStock() < 0)
             throw new BusinessException("El stock no puede ser negativo");
 
-        if (request.getPrice().compareTo(BigDecimal.ZERO) < 0)
+        if (request.getPrice() != null &&
+                request.getPrice().compareTo(BigDecimal.ZERO) < 0)
             throw new BusinessException("El precio no puede ser negativo");
+
+
+        SubcategoryEntity subcategory = null;
+        if (request.getSubcategoryId() != null &&
+                !request.getSubcategoryId().equals(product.getSubcategory().getId())) {
+
+            subcategory = subcategoryRepository.findById(request.getSubcategoryId())
+                    .orElseThrow(() ->
+                            new ResourceNotFoundException("Subcategoría no encontrada id: "
+                                    + request.getSubcategoryId()));
+        }
 
         productMapper.updateEntity(product, request, subcategory);
 

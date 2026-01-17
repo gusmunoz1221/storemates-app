@@ -1,5 +1,6 @@
 package com.storemates.category.controller;
 
+import com.storemates.category.dto.SubcategoryPatchRequestDTO;
 import com.storemates.category.dto.SubcategoryRequestDTO;
 import com.storemates.category.dto.SubcategorySimpleDTO;
 import com.storemates.category.service.CategoryService;
@@ -27,7 +28,7 @@ public class SubCategoryAdminController {
 
     @PutMapping("/{id}")
     public ResponseEntity<SubcategorySimpleDTO> update(@PathVariable Long id,
-                                                       @RequestBody SubcategoryRequestDTO request){
+                                                       @RequestBody SubcategoryPatchRequestDTO request){
         return ResponseEntity.ok(categoryService.updateSubcategory(id,request));
     }
 

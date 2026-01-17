@@ -3,6 +3,7 @@ package com.storemates.category.entity;
 import com.storemates.product.entity.ProductEntity;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.envers.Audited;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "subcategories")
+@Audited
 public class SubcategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

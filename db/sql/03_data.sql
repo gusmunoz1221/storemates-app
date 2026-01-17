@@ -1,109 +1,38 @@
 -- ================================
 -- CATEGORIES
 -- ================================
-INSERT INTO categories (name, description) VALUES
-('Electrónica', 'Productos electrónicos y tecnológicos'),
-('Hogar', 'Artículos para el hogar'),
-('Deportes', 'Equipamiento y accesorios deportivos'),
-('Audio', 'Equipos y accesorios de audio'),
-('Oficina', 'Productos para oficina y estudio');
+INSERT INTO categories (name, description)
+VALUES
+    ('Mates',        'Mates de calabaza, madera, cerámica y acero'),
+    ('Bombillas',    'Bombillas de alpaca, acero y bronce'),
+    ('Yerbas',       'Yerbas orgánicas, tradicionales y compuestas'),
+    ('Termos',       'Termos de acero inoxidable y repuestos'),
+    ('Accesorios',   'Materas, yerberas y complementos')
+ON CONFLICT DO NOTHING;
 
 -- ================================
 -- SUBCATEGORIES
 -- ================================
-INSERT INTO subcategories (name, description, category_id) VALUES
-(
-  'Celulares',
-  'Smartphones y accesorios',
-  (SELECT id FROM categories WHERE name = 'Electrónica')
-),
-(
-  'Computación',
-  'Notebooks, PCs y periféricos',
-  (SELECT id FROM categories WHERE name = 'Electrónica')
-),
-(
-  'Cocina',
-  'Electrodomésticos de cocina',
-  (SELECT id FROM categories WHERE name = 'Hogar')
-),
-(
-  'Fitness',
-  'Equipamiento para entrenamiento',
-  (SELECT id FROM categories WHERE name = 'Deportes')
-),
-(
-  'Auriculares',
-  'Auriculares y headsets',
-  (SELECT id FROM categories WHERE name = 'Audio')
-),
-(
-  'Escritorios',
-  'Escritorios y mobiliario de oficina',
-  (SELECT id FROM categories WHERE name = 'Oficina')
-);
-
+INSERT INTO subcategories (name, description, category_id)
+VALUES
+    ('Imperiales',      'Mates de calabaza forrados con virola de alpaca', (SELECT id FROM categories WHERE name = 'Mates')),
+    ('Pico de Loro',    'Bombillas curvas ideales para montañita',         (SELECT id FROM categories WHERE name = 'Bombillas')),
+    ('Sin Palo',        'Yerba despalada estilo uruguayo',                 (SELECT id FROM categories WHERE name = 'Yerbas')),
+    ('Media Manija',    'Termos con manija de transporte',                 (SELECT id FROM categories WHERE name = 'Termos')),
+    ('Materas de Cuero','Bolsos materos de cuero vacuno legítimo',         (SELECT id FROM categories WHERE name = 'Accesorios'))
+ON CONFLICT DO NOTHING;
 
 -- ================================
 -- PRODUCTS
 -- ================================
-INSERT INTO products (name, price, description, url, stock, subcategory_id) VALUES
-(
-  'Samsung Galaxy S23',
-  1200000.00,
-  'Smartphone Samsung Galaxy S23 128GB',
-  'https://example.com/s23',
-  10,
-  (SELECT id FROM subcategories WHERE name = 'Celulares')
-),
-(
-  'iPhone 14',
-  1500000.00,
-  'Apple iPhone 14 128GB',
-  'https://example.com/iphone14',
-  8,
-  (SELECT id FROM subcategories WHERE name = 'Celulares')
-),
-(
-  'Notebook Lenovo ThinkPad',
-  1800000.00,
-  'Notebook Lenovo ThinkPad i5 16GB RAM',
-  'https://example.com/thinkpad',
-  5,
-  (SELECT id FROM subcategories WHERE name = 'Computación')
-),
-(
-  'Licuadora Philips',
-  220000.00,
-  'Licuadora Philips 600W',
-  'https://example.com/licuadora',
-  15,
-  (SELECT id FROM subcategories WHERE name = 'Cocina')
-),
-(
-  'Mancuernas 10kg',
-  85000.00,
-  'Par de mancuernas ajustables 10kg',
-  'https://example.com/mancuernas',
-  20,
-  (SELECT id FROM subcategories WHERE name = 'Fitness')
-),
-(
-  'Auriculares Sony WH-1000XM5',
-  980000.00,
-  'Auriculares inalámbricos con cancelación de ruido',
-  'https://example.com/sony-xm5',
-  12,
-  (SELECT id FROM subcategories WHERE name = 'Auriculares')
-),
-(
-  'Escritorio Oficina Pro',
-  450000.00,
-  'Escritorio de oficina de madera 140cm',
-  'https://example.com/escritorio',
-  6,
-  (SELECT id FROM subcategories WHERE name = 'Escritorios')
-);
+INSERT INTO products (name, price, stock, description, url, subcategory_id)
+VALUES
+    ('Mate Imperial Cincelado', 45000.00, 20,  'Calabaza seleccionada, virola alpaca', 'https://via.placeholder.com/300', (SELECT id FROM subcategories WHERE name = 'Imperiales')),
+    ('Bombilla Alpaca Premium', 12500.00, 50,  'Caño grueso, filtro ranurado',         'https://via.placeholder.com/300', (SELECT id FROM subcategories WHERE name = 'Pico de Loro')),
+    ('Yerba Canarias 1kg',      8500.00,  100, 'Yerba importada, molienda fina',       'https://via.placeholder.com/300', (SELECT id FROM subcategories WHERE name = 'Sin Palo')),
+    ('Termo Stanley 1.4L',      110000.00,15,  'Verde clásico, tapón cebador',         'https://via.placeholder.com/300', (SELECT id FROM subcategories WHERE name = 'Media Manija')),
+    ('Matera Rígida Negra',     35000.00, 10,  'Cuero ecológico, entra termo grande',  'https://via.placeholder.com/300', (SELECT id FROM subcategories WHERE name = 'Materas de Cuero'))
+ON CONFLICT (name) DO NOTHING;
 
 -- ================================
 -- USERS (ADMINS)
@@ -117,149 +46,60 @@ INSERT INTO users (firstname, lastname, email, password, role) VALUES
 -- ================================
 -- CARTS
 -- ================================
-INSERT INTO carts (session_id, total_amount) VALUES
-('SESSION_ABC123', 1200000.00),
-('SESSION_DEF456', 2025000.00),
-('SESSION_GHI789', 980000.00),
-('SESSION_JKL321', 450000.00);
+INSERT INTO carts (session_id, total_amount)
+VALUES
+    ('sess_mate_001', 0),
+    ('sess_mate_002', 0),
+    ('sess_mate_003', 0),
+    ('sess_mate_004', 0),
+    ('sess_mate_005', 0)
+ON CONFLICT (session_id) DO NOTHING;;
 
 -- ================================
 -- CART ITEMS
 -- ================================
-INSERT INTO cart_items (quantity, unit_price, cart_id, product_id) VALUES
-(
-  1,
-  1200000.00,
-  (SELECT id FROM carts WHERE session_id = 'SESSION_ABC123'),
-  (SELECT id FROM products WHERE name = 'Samsung Galaxy S23')
-),
-(
-  1,
-  1500000.00,
-  (SELECT id FROM carts WHERE session_id = 'SESSION_DEF456'),
-  (SELECT id FROM products WHERE name = 'iPhone 14')
-),
-(
-  1,
-  525000.00,
-  (SELECT id FROM carts WHERE session_id = 'SESSION_DEF456'),
-  (SELECT id FROM products WHERE name = 'Licuadora Philips')
-),
-(
-  1,
-  980000.00,
-  (SELECT id FROM carts WHERE session_id = 'SESSION_GHI789'),
-  (SELECT id FROM products WHERE name = 'Auriculares Sony WH-1000XM5')
-),
-(
-  1,
-  450000.00,
-  (SELECT id FROM carts WHERE session_id = 'SESSION_JKL321'),
-  (SELECT id FROM products WHERE name = 'Escritorio Oficina Pro')
-),
-(
-  2,
-  85000.00,
-  (SELECT id FROM carts WHERE session_id = 'SESSION_JKL321'),
-  (SELECT id FROM products WHERE name = 'Mancuernas 10kg')
-);
+
 
 -- ================================
 -- ORDERS
 -- ================================
-INSERT INTO orders (
-  customer_name,
-  customer_email,
-  customer_phone,
-  shipping_address,
-  shipping_city,
-  shipping_zip,
-  total_amount,
-  cart_id,
-  status
-) VALUES
-(
-  'Carlos Gómez',
-  'carlos.gomez@gmail.com',
-  '2645123456',
-  'Av. Libertador 1234',
-  'San Juan',
-  '5400',
-  1200000.00,
-  (SELECT id FROM carts WHERE session_id = 'SESSION_ABC123'),
-  'PAID'
-),
-(
-  'María López',
-  'maria.lopez@gmail.com',
-  '2645987654',
-  'Calle Mendoza 432',
-  'San Juan',
-  '5400',
-  2025000.00,
-  (SELECT id FROM carts WHERE session_id = 'SESSION_DEF456'),
-  'PENDING'
-),
-(
-  'Diego Ruiz',
-  'diego.ruiz@gmail.com',
-  '2645112233',
-  'Av. España 222',
-  'San Juan',
-  '5400',
-  980000.00,
-  (SELECT id FROM carts WHERE session_id = 'SESSION_GHI789'),
-  'PAID'
-),
-(
-  'Ana Morales',
-  'ana.morales@gmail.com',
-  '2645332211',
-  'Mitre 987',
-  'San Juan',
-  '5400',
-  450000.00,
-  (SELECT id FROM carts WHERE session_id = 'SESSION_JKL321'),
-  'SHIPPED'
-);
+INSERT INTO orders (customer_name, customer_email, total_amount, status, shipping_address, shipping_city, shipping_zip, cart_id)
+SELECT 'Facundo Arana', 'facu@mate.com', 45000.00, 'PAID', 'Av. Corrientes 1234', 'CABA', '1043', (SELECT id FROM carts WHERE session_id = 'sess_mate_001')
+WHERE NOT EXISTS (SELECT 1 FROM orders WHERE customer_email = 'facu@mate.com');
+
+INSERT INTO orders (customer_name, customer_email, total_amount, status, shipping_address, shipping_city, shipping_zip, cart_id)
+SELECT 'Lionel Messi', 'lio@mate.com', 118500.00, 'PENDING', 'Av. Corrientes 1234', 'CABA', '1043', (SELECT id FROM carts WHERE session_id = 'sess_mate_002')
+WHERE NOT EXISTS (SELECT 1 FROM orders WHERE customer_email = 'lio@mate.com');
+
+INSERT INTO orders (customer_name, customer_email, total_amount, status, shipping_address, shipping_city, shipping_zip, cart_id)
+SELECT 'Marta Minujín', 'marta@mate.com', 12500.00, 'SHIPPED', 'Av. Corrientes 1234', 'CABA', '1043', (SELECT id FROM carts WHERE session_id = 'sess_mate_003')
+WHERE NOT EXISTS (SELECT 1 FROM orders WHERE customer_email = 'marta@mate.com');
+
+INSERT INTO orders (customer_name, customer_email, total_amount, status, shipping_address, shipping_city, shipping_zip, cart_id)
+SELECT 'Ricardo Darín', 'richard@mate.com', 35000.00, 'PAID', 'Av. Corrientes 1234', 'CABA', '1043', (SELECT id FROM carts WHERE session_id = 'sess_mate_004')
+WHERE NOT EXISTS (SELECT 1 FROM orders WHERE customer_email = 'richard@mate.com');
+
+INSERT INTO orders (customer_name, customer_email, total_amount, status, shipping_address, shipping_city, shipping_zip, cart_id)
+SELECT 'Duki', 'duki@mate.com', 8500.00, 'CANCELLED', 'Av. Corrientes 1234', 'CABA', '1043', (SELECT id FROM carts WHERE session_id = 'sess_mate_005')
+WHERE NOT EXISTS (SELECT 1 FROM orders WHERE customer_email = 'duki@mate.com');
 
 -- ================================
 -- ORDER ITEMS
 -- ================================
-INSERT INTO order_items (quantity, price, product_id, order_id) VALUES
-(
-  1,
-  1200000.00,
-  (SELECT id FROM products WHERE name = 'Samsung Galaxy S23'),
-  (SELECT id FROM orders WHERE customer_email = 'carlos.gomez@gmail.com')
-),
-(
-  1,
-  1500000.00,
-  (SELECT id FROM products WHERE name = 'iPhone 14'),
-  (SELECT id FROM orders WHERE customer_email = 'maria.lopez@gmail.com')
-),
-(
-  1,
-  525000.00,
-  (SELECT id FROM products WHERE name = 'Licuadora Philips'),
-  (SELECT id FROM orders WHERE customer_email = 'maria.lopez@gmail.com')
-),
-(
-  1,
-  980000.00,
-  (SELECT id FROM products WHERE name = 'Auriculares Sony WH-1000XM5'),
-  (SELECT id FROM orders WHERE customer_email = 'diego.ruiz@gmail.com')
-),
-(
-  1,
-  450000.00,
-  (SELECT id FROM products WHERE name = 'Escritorio Oficina Pro'),
-  (SELECT id FROM orders WHERE customer_email = 'ana.morales@gmail.com')
-),
-(
-  2,
-  85000.00,
-  (SELECT id FROM products WHERE name = 'Mancuernas 10kg'),
-  (SELECT id FROM orders WHERE customer_email = 'ana.morales@gmail.com')
-);
+INSERT INTO order_items (quantity, price, order_id, product_id)
+VALUES
+    (1, 45000.00,  (SELECT id FROM orders WHERE customer_email = 'facu@mate.com'),    (SELECT id FROM products WHERE name = 'Mate Imperial Cincelado')),
+    (1, 110000.00, (SELECT id FROM orders WHERE customer_email = 'lio@mate.com'),     (SELECT id FROM products WHERE name = 'Termo Stanley 1.4L')),
+    (1, 8500.00,   (SELECT id FROM orders WHERE customer_email = 'lio@mate.com'),     (SELECT id FROM products WHERE name = 'Yerba Canarias 1kg')),
+    (1, 12500.00,  (SELECT id FROM orders WHERE customer_email = 'marta@mate.com'),   (SELECT id FROM products WHERE name = 'Bombilla Alpaca Premium')),
+    (1, 35000.00,  (SELECT id FROM orders WHERE customer_email = 'richard@mate.com'), (SELECT id FROM products WHERE name = 'Matera Rígida Negra'));
+
+-- ============================
+-- SINCRONIZACIÓN DE SECUENCIAS
+-- ============================
+SELECT setval(pg_get_serial_sequence('categories', 'id'), COALESCE(MAX(id), 1)) FROM categories;
+SELECT setval(pg_get_serial_sequence('subcategories', 'id'), COALESCE(MAX(id), 1)) FROM subcategories;
+SELECT setval(pg_get_serial_sequence('products', 'id'), COALESCE(MAX(id), 1)) FROM products;
+SELECT setval(pg_get_serial_sequence('carts', 'id'), COALESCE(MAX(id), 1)) FROM carts;
+SELECT setval(pg_get_serial_sequence('orders', 'id'), COALESCE(MAX(id), 1)) FROM orders;
+SELECT setval(pg_get_serial_sequence('order_items', 'id'), COALESCE(MAX(id), 1)) FROM order_items;

@@ -9,4 +9,5 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<CategoryEntity,Long> {
     @Query("SELECT c FROM CategoryEntity c LEFT JOIN FETCH c.subcategories")
     List<CategoryEntity> findAllWithSubcategories();
+    boolean existsByName(String name);
 }

@@ -1,9 +1,6 @@
 package com.storemates.category.mapper;
 
-import com.storemates.category.dto.CategoryRequestDTO;
-import com.storemates.category.dto.CategoryResponseDTO;
-import com.storemates.category.dto.SubcategoryRequestDTO;
-import com.storemates.category.dto.SubcategorySimpleDTO;
+import com.storemates.category.dto.*;
 import com.storemates.category.entity.CategoryEntity;
 import com.storemates.category.entity.SubcategoryEntity;
 import org.springframework.stereotype.Component;
@@ -41,7 +38,7 @@ public class CategoryMapper {
         return entity;
     }
 
-    public void updateCategoryFromDto(CategoryRequestDTO request, CategoryEntity entity) {
+    public void updateCategoryFromDto(CategoryPatchRequestDTO request, CategoryEntity entity) {
         if (request.getName() != null) entity.setName(request.getName());
         if (request.getDescription() != null) entity.setDescription(request.getDescription());
     }
@@ -67,7 +64,7 @@ public class CategoryMapper {
         return entity;
     }
 
-    public void updateSubcategoryFromDto(SubcategoryRequestDTO request, SubcategoryEntity entity) {
+    public void updateSubcategoryFromDto(SubcategoryPatchRequestDTO request, SubcategoryEntity entity) {
         if (request.getName() != null) entity.setName(request.getName());
         if (request.getDescription() != null) entity.setDescription(request.getDescription());
     }

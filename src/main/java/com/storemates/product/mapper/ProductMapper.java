@@ -1,6 +1,7 @@
 package com.storemates.product.mapper;
 
 import com.storemates.category.entity.SubcategoryEntity;
+import com.storemates.product.dto.ProductPatchRequestDTO;
 import com.storemates.product.dto.ProductRequestDTO;
 import com.storemates.product.dto.ProductResponseDTO;
 import com.storemates.product.entity.ProductEntity;
@@ -38,7 +39,7 @@ public class ProductMapper {
                 .build();
     }
 
-    public void updateEntity(ProductEntity entity, ProductRequestDTO productRequest, SubcategoryEntity subcategory) {
+    public void updateEntity(ProductEntity entity, ProductPatchRequestDTO productRequest, SubcategoryEntity subcategory) {
         if (productRequest.getName() != null) entity.setName(productRequest.getName());
         if (productRequest.getPrice() != null) entity.setPrice(productRequest.getPrice());
         if (productRequest.getDescription() != null) entity.setDescription(productRequest.getDescription());
