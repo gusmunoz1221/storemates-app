@@ -5,23 +5,32 @@ import com.storemates.audit.dto.ProductAuditHistory;
 import com.storemates.audit.repository.AuditRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+
+import java.time.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class AuditService {
     private final AuditRepository auditRepository;
 
-    public List<AuditDTO> getHistoryByDate(LocalDate date) {
+    public List<AuditDTO> getHistoryByDate(YearMonth yearMonth) {
+        Instant start = yearMonth
+                .atDay(1)
+                .atStartOfDay(ZoneOffset.UTC)
+                .toInstant();
 
-        LocalDateTime start = date.atStartOfDay();
-        LocalDateTime end = date.atTime(LocalTime.MAX);
+        Instant end = yearMonth
+                .atEndOfMonth()
+                .atTime(LocalTime.MAX)
+                .atZone(ZoneOffset.UTC)
+                .toInstant();
 
-        List<ProductAuditHistory> rawData = auditRepository.findAuditByDateRange(start, end);
+        long startMillis = start.toEpochMilli();
+        long endMillis = end.toEpochMilli();
+
+        List<ProductAuditHistory> rawData =
+                auditRepository.findAuditByDateRange(startMillis, endMillis);
 
         return rawData.stream()
                 .map(history -> new AuditDTO(
@@ -31,8 +40,7 @@ public class AuditService {
                         history.getStockResultante(),
                         history.getAccion(),
                         history.getResponsable(),
-                        history.getFechaHora()
-                ))
-                .collect(Collectors.toList());
+                        history.getFechaHora()))
+                .toList();
     }
 }

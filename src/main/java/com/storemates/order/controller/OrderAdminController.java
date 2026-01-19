@@ -40,13 +40,13 @@ public class OrderAdminController {
     }
 
     // Eejemlo: /ADMIN/orders/report?start=2025-11-01T00:00:00&end=2025-11-30T23:59:59
-    @GetMapping("/report")
-    public ResponseEntity<Page<OrderResponseDTO>> getOrdersByDateRange(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
-            @PageableDefault(size = 10, sort = "createdAt") Pageable pageable) {
-        return ResponseEntity.ok(orderService.findByCreatedAtBetween(start, end, pageable));
-    }
+ //   @GetMapping("/report")
+ //   public ResponseEntity<Page<OrderResponseDTO>> getOrdersByDateRange(
+ //           @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+ //           @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
+ //           @PageableDefault(size = 10, sort = "createdAt") Pageable pageable) {
+ //       return ResponseEntity.ok(orderService(start, end, pageable));
+ //   }
 
     @GetMapping("/total-sales")
     public ResponseEntity<TotalSales> getTotalSales() {

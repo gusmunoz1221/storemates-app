@@ -16,24 +16,24 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
     // por estado
     Page<OrderEntity> findByStatus(OrderStatus status, Pageable pageable);
 
-    // por rango de fechas
-    Page<OrderEntity> findByCreatedAtBetween(LocalDateTime start,
-                                             LocalDateTime end,
-                                             Pageable pageable);
-
-    @Query("""
-    SELECT new com.storemates.order.dto.TotalSales(
+    @Query(""" 
+        SELECT new com.storemates.order.dto.TotalSales(
         COUNT(DISTINCT o.customerEmail),
-        SUM(o.totalAmount)
-    )
+        SUM(o.totalAmount))
     FROM OrderEntity o""")
     TotalSales getSalesStats();
 
-    /**
-     * -borra las ordenes cada una hora
-     */
+
+     // borra las ordenes cada una hora
     List<OrderEntity> findByStatusAndCreatedAtBefore(
             OrderStatus status,
             LocalDateTime createdAt
     );
+
+    // solo por Rango de Fechas
+    Page<OrderEntity> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end, Pageable pageable);
+
+    // rango de Fechas + Estado
+    Page<OrderEntity> findByCreatedAtBetweenAndStatus(LocalDateTime start, LocalDateTime end, OrderStatus status, Pageable pageable);
+
 }

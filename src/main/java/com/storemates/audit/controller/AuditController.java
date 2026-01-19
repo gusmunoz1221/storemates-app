@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 @RestController
@@ -24,6 +25,6 @@ public class AuditController {
     // Ejemplo de llamada :/admin/audit/products?date=16/01/2026
     @GetMapping("/products")
     public ResponseEntity<List<AuditDTO>> getProductHistory(
-            @RequestParam("date") @DateTimeFormat(pattern = "dd/MM/yyyy") LocalDate date
-    ) {return ResponseEntity.ok(auditService.getHistoryByDate(date));}
+            @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM") YearMonth month
+    ) {return ResponseEntity.ok(auditService.getHistoryByDate(month));}
 }

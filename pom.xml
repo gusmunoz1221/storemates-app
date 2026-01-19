@@ -108,6 +108,13 @@
             <artifactId>hibernate-envers</artifactId>
         </dependency>
 
+        <!-- CHECKOUT REPORTS -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.5.1</version>
+        </dependency>
+
         <!-- LOMBOK -->
         <dependency>
             <groupId>org.projectlombok</groupId>

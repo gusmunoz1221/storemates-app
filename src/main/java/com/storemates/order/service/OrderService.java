@@ -27,9 +27,9 @@ public interface OrderService {
     Page<OrderResponseDTO> filterOrdersByStatus(OrderStatus status, Pageable pageable);
 
     // BUSCAR ORDENB POR FECHAS
-    Page<OrderResponseDTO> findByCreatedAtBetween(LocalDateTime start,
-                                                  LocalDateTime end,
-                                                  Pageable pageable);
+   // Page<OrderResponseDTO> findByCreatedAtBetween(LocalDateTime start,
+    //                                              LocalDateTime end,
+     //                                             Pageable pageable);
 
     // TOTAL DE VENTAS
     TotalSales getTotalSales();
